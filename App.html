@@ -1,0 +1,18 @@
+<h1>the answer is {{answer}}</h1>
+<Nested foo='{{foo}}'/>
+
+<script>
+	import Nested from './Nested.html';
+
+	export default {
+		data () {
+			return {
+				foo: 'bar'
+			};
+		},
+
+		components: {
+			Nested
+		}
+	};
+</script>
