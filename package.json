@@ -1,8 +1,8 @@
 {
   "devDependencies": {
-    "rollup": "^0.37.0",
-    "rollup-plugin-svelte": "^1.2.0",
-    "rollup-watch": "^2.5.0"
+    "rollup": "^0.41.4",
+    "rollup-plugin-svelte": "^1.6.0",
+    "rollup-watch": "^3.2.2"
   },
   "scripts": {
     "build": "rollup -c",
