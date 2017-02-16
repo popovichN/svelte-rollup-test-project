@@ -1,8 +1,1 @@
-# svelte + rollup
-
-```bash
-npm install
-npm run dev
-```
-
-...then open index.html. Excuse the lack of folder organisation, don't think you can have folders in a gist.
+# based on https://gist.github.com/Rich-Harris/e1ab25cfa6a4bcf4eb47e678133e4aad
