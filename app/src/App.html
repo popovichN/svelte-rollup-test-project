@@ -1,0 +1,93 @@
+<h1>Line chart</h1>
+
+<svg>
+	<g transform='translate(0,0)'>
+		<g class='axes'>
+			<g class='axis y-axis'>
+				
+			</g>
+			<g class='axis x-axis'>
+				<path stroke="#000" d=""></path>
+				{{console.log(yScale(80), 'test')}}
+			</g>
+		</g>
+	</g>
+</svg>
+
+<Nested foo='{{foo}}'/>
+
+<style>
+	svg {
+		width: 100%;
+		height: 0;
+		padding-bottom: 50%;
+	}
+</style>
+
+<script>
+	import Nested from './Nested.html';
+	import { scaleLinear } from "d3-scale";
+
+
+	// console.log( scaleLinear, 'd3' );
+	
+	// export default {
+
+ //    onrender () {
+ //      this.interval = setInterval( () => {
+ //        this.set({ time: new Date() });
+ //      }, 1000 );
+ //    },
+
+ //    onteardown () {
+ //      clearInterval( this.interval );
+ //    },
+
+ //    data () {
+ //      return {
+ //        time: new Date()
+ //      };
+ //    },
+
+ //    computed: {
+ //      hours: time => time.getHours(),
+ //      minutes: time => time.getMinutes(),
+ //      seconds: time => time.getSeconds()
+ //    }
+ //  };
+	export default {
+		data () {
+			return {
+				padding: {
+					top: 5,
+					right: 5,
+					bottom: 5,
+					left: 5
+				},
+				height: 200,
+				foo: 'bar',
+				yTicks:  [30, 40, 50, 60, 70, 80 ]
+			};
+		},
+		components: {
+			Nested
+		},
+		computed: {
+			hours: function ( hrs ) {
+				//var time = this.get('hrs');
+				
+				console.log(hrs,' time')
+				return hrs * 3;
+			},
+			yScale: function ( padding, height ) {
+				return scaleLinear()
+					.domain([30, 80])
+   					.range([height - padding.bottom, padding.top]);
+			}
+		},
+		onrender () {
+			console.log('rendered')
+		}
+
+	};
+</script>

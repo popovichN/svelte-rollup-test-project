@@ -1,8 +1,8 @@
-import App from './App.html';
+import App from './src/App.html';
 
 window.app = new App({
 	target: document.querySelector( 'main' ),
 	data: {
-		answer: 42
+		answer: 50
 	}
 });
