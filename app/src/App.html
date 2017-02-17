@@ -1,5 +1,5 @@
-<h1>Line chart: Us birth rate by year</h1>
-
+<h1>Line chart: US birth rate by year</h1>
+<p>Source: <a href='https://www.cdc.gov/nchs/data/nvsr/nvsr66/nvsr66_01.pdf' target='_blank'>CDC</a></p>
 <svg>
 {{#if ready}}
 	<g transform='translate(0,0)'>
@@ -30,13 +30,21 @@
 {{/if}}
 </svg>
 
-<Nested foo='{{foo}}'/>
-
+<!-- <Nested foo='{{foo}}'/>
+ -->
 <style>
-h1 {
-	font-family: Helvetica;
-	font-size: 1.25em;
-}
+	h1,
+	p {
+		font-family: Helvetica;
+	}
+	h1 {
+		font-size: 1.25em;
+
+	}	
+	p {
+		font-size: .825em; 
+		color: #ccc;
+	}
 	svg {
 		width: 300px;
 		height: 0;
@@ -65,7 +73,7 @@ h1 {
 		stroke: #fb0;
 		stroke-linejoin: round;
 		stroke-linecap: round;
-		stroke-width: 1.5; 
+		stroke-width: 2; 
 	}
 </style>
 
