@@ -8,7 +8,12 @@
 			</g>
 			<g class='axis x-axis'>
 				<path stroke="#000" d=""></path>
-				{{console.log(yScale(80), 'test')}}
+				{{#each yTicks as tick}}
+					<g class="tick" transform="translate( {{ padding.left }}, {{ yScale(tick) }} )">
+						<line transform="translate( {{ padding.left * 1.5 }}, 0 )" stroke="#000" x2="100%" y1="0" y2="0"></line>
+						<text fill="#000" x="{{ padding.left }}" y="0" dy="5">{{tick}}</text>
+					</g>
+				{{/each}}
 			</g>
 		</g>
 	</g>
@@ -22,51 +27,36 @@
 		height: 0;
 		padding-bottom: 50%;
 	}
+	.tick {
+		font-family: Arial;
+		font-size: .825em;
+	}
+	.tick line {
+		stroke: #e2e2e2;
+		stroke-dasharray: 1.5;
+	}
+	.tick text {
+		fill: #ccc;
+		text-anchor: end;
+	}
 </style>
 
 <script>
 	import Nested from './Nested.html';
 	import { scaleLinear } from "d3-scale";
 
-
-	// console.log( scaleLinear, 'd3' );
-	
-	// export default {
-
- //    onrender () {
- //      this.interval = setInterval( () => {
- //        this.set({ time: new Date() });
- //      }, 1000 );
- //    },
-
- //    onteardown () {
- //      clearInterval( this.interval );
- //    },
-
- //    data () {
- //      return {
- //        time: new Date()
- //      };
- //    },
-
- //    computed: {
- //      hours: time => time.getHours(),
- //      minutes: time => time.getMinutes(),
- //      seconds: time => time.getSeconds()
- //    }
- //  };
 	export default {
 		data () {
 			return {
 				padding: {
-					top: 5,
-					right: 5,
-					bottom: 5,
-					left: 5
+					top: 10,
+					right: 10,
+					bottom: 10,
+					left: 10
 				},
 				height: 200,
 				foo: 'bar',
-				yTicks:  [30, 40, 50, 60, 70, 80 ]
+				yTicks:  [0, 10, 20, 30, 40, 50 ]
 			};
 		},
 		components: {
@@ -81,7 +71,7 @@
 			},
 			yScale: function ( padding, height ) {
 				return scaleLinear()
-					.domain([30, 80])
+					.domain([0, 50])
    					.range([height - padding.bottom, padding.top]);
 			}
 		},
