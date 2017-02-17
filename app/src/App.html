@@ -25,6 +25,8 @@
 			</g>
 		</g>
 	</g>
+
+	<path class='path-line' d="{{ path }}"></path>
 {{/if}}
 </svg>
 
@@ -54,6 +56,13 @@
 	.x-axis .tick text {
 		text-anchor: middle;
 	}
+	.path-line {
+		fill: none;
+		stroke: #fb0;
+		stroke-linejoin: round;
+		stroke-linecap: round;
+		stroke-width: 1.5; 
+	}
 </style>
 
 <script>
@@ -72,7 +81,7 @@
 				height: 200,
 				width: 300,
 				foo: 'bar',
-				yTicks:  [0, 10, 20, 30, 40, 50 ],
+				yTicks:  [0, 5, 10, 15, 20 ],
 				xTicks: [1990, 1995, 2000, 2005, 2010, 2015],
 				projects: [],
 				ready: false
@@ -82,15 +91,33 @@
 			Nested
 		},
 		computed: {
-			yScale: function ( padding, height ) {
+			yScale: function ( padding, height, yTicks ) {
 				return scaleLinear()
-					.domain([0, 50])
+					.domain([Math.min.apply(null, yTicks), Math.max.apply(null, yTicks)])
    					.range([height - padding.bottom, padding.top]);
 			},
-			xScale: function ( padding, width ) {
+			xScale: function ( padding, width, xTicks ) {
 				return scaleLinear()
-					.domain([1990, 2015])
+					.domain([Math.min.apply(null, xTicks), Math.max.apply(null, xTicks)])
    					.range([padding.left, width - padding.right]);
+			},
+			path ( projects, xScale, yScale ) {
+				
+				var path = '';
+
+				// make path
+				projects.forEach(function (datapoint, i) {
+					var year = datapoint.year;
+
+					if (i === 0) {
+						path = 'M' + xScale(year) + ' ' + yScale(datapoint.birthrate_all) + ' ';
+					} else {
+						path += 'L ' + xScale(year) + ' ' + yScale(datapoint.birthrate_all) + ' ';
+
+					}
+				})
+			
+				return path;
 			}
 		},
 		onrender () {
