@@ -3,16 +3,20 @@
 <svg>
 	<g transform='translate(0,0)'>
 		<g class='axes'>
+			<!-- y axis -->
 			<g class='axis y-axis'>
-				
-			</g>
-			<g class='axis x-axis'>
-				<path stroke="#000" d=""></path>
+				<!-- <path stroke="#000" d=""></path> -->
 				{{#each yTicks as tick}}
-					<g class="tick" transform="translate( {{ padding.left }}, {{ yScale(tick) }} )">
-						<line transform="translate( {{ padding.left * 1.5 }}, 0 )" stroke="#000" x2="100%" y1="0" y2="0"></line>
-						<text fill="#000" x="{{ padding.left }}" y="0" dy="5">{{tick}}</text>
+					<g class="tick tick-{{ tick }}" transform="translate( {{ padding.left }}, {{ yScale(tick) + padding.top }} )">
+						<line stroke="#000" x2="100%" y1="0" y2="0"></line>
+						<text fill="#000" x="0" y="0" dy="-2">{{ tick !== 0 ? tick : ''}}</text>
 					</g>
+				{{/each}}
+			</g>
+			<!-- x axis -->
+			<g class='axis x-axis'>
+				{{#each xTicks as tick}}
+
 				{{/each}}
 			</g>
 		</g>
@@ -33,11 +37,14 @@
 	}
 	.tick line {
 		stroke: #e2e2e2;
-		stroke-dasharray: 1.5;
+		stroke-dasharray: 2;
 	}
 	.tick text {
 		fill: #ccc;
-		text-anchor: end;
+		text-anchor: start;
+	}
+	.tick.tick-0 line {
+		stroke-dasharray: 0;
 	}
 </style>
 
@@ -56,7 +63,8 @@
 				},
 				height: 200,
 				foo: 'bar',
-				yTicks:  [0, 10, 20, 30, 40, 50 ]
+				yTicks:  [0, 10, 20, 30, 40, 50 ],
+				xTicks: [1990, 1995, 2000, 2005, 2010, 2015]
 			};
 		},
 		components: {

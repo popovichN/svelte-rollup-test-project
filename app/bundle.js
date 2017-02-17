@@ -97,6 +97,8 @@ function _flush () {
 	}
 }
 
+function noop () {}
+
 function dispatchObservers ( component, group, newState, oldState ) {
 	for ( var key in group ) {
 		if ( !( key in newState ) ) continue;
@@ -2600,7 +2602,8 @@ var template = (function () {
 				},
 				height: 200,
 				foo: 'bar',
-				yTicks:  [0, 10, 20, 30, 40, 50 ]
+				yTicks:  [0, 10, 20, 30, 40, 50 ],
+				xTicks: [1990, 1995, 2000, 2005, 2010, 2015]
 			};
 		},
 		components: {
@@ -2629,7 +2632,7 @@ var template = (function () {
 let addedCss = false;
 function addCss () {
 	var style = createElement( 'style' );
-	style.textContent = "\n\tsvg[svelte-1809940787], [svelte-1809940787] svg {\n\t\twidth: 100%;\n\t\theight: 0;\n\t\tpadding-bottom: 50%;\n\t}\n\t.tick[svelte-1809940787], [svelte-1809940787] .tick {\n\t\tfont-family: Arial;\n\t\tfont-size: .825em;\n\t}\n\t.tick  line[svelte-1809940787], .tick  [svelte-1809940787] line, .tick[svelte-1809940787]  line, [svelte-1809940787] .tick  line {\n\t\tstroke: #e2e2e2;\n\t\tstroke-dasharray: 1.5;\n\t}\n\t.tick  text[svelte-1809940787], .tick  [svelte-1809940787] text, .tick[svelte-1809940787]  text, [svelte-1809940787] .tick  text {\n\t\tfill: #ccc;\n\t\ttext-anchor: end;\n\t}\n";
+	style.textContent = "\n\tsvg[svelte-670753869], [svelte-670753869] svg {\n\t\twidth: 100%;\n\t\theight: 0;\n\t\tpadding-bottom: 50%;\n\t}\n\t.tick[svelte-670753869], [svelte-670753869] .tick {\n\t\tfont-family: Arial;\n\t\tfont-size: .825em;\n\t}\n\t.tick  line[svelte-670753869], .tick  [svelte-670753869] line, .tick[svelte-670753869]  line, [svelte-670753869] .tick  line {\n\t\tstroke: #e2e2e2;\n\t\tstroke-dasharray: 2;\n\t}\n\t.tick  text[svelte-670753869], .tick  [svelte-670753869] text, .tick[svelte-670753869]  text, [svelte-670753869] .tick  text {\n\t\tfill: #ccc;\n\t\ttext-anchor: start;\n\t}\n\t.tick.tick-0  line[svelte-670753869], .tick.tick-0  [svelte-670753869] line, .tick.tick-0[svelte-670753869]  line, [svelte-670753869] .tick.tick-0  line {\n\t\tstroke-dasharray: 0;\n\t}\n";
 	appendNode( style, document.head );
 
 	addedCss = true;
@@ -2637,52 +2640,54 @@ function addCss () {
 
 function renderMainFragment ( root, component ) {
 	var h1 = createElement( 'h1' );
-	setAttribute( h1, 'svelte-1809940787', '' );
+	setAttribute( h1, 'svelte-670753869', '' );
 	
 	appendNode( createText( "Line chart" ), h1 );
 	var text1 = createText( "\n\n" );
 	
 	var svg = createSvgElement( 'svg' );
-	setAttribute( svg, 'svelte-1809940787', '' );
+	setAttribute( svg, 'svelte-670753869', '' );
 	
 	var g = createSvgElement( 'g' );
-	setAttribute( g, 'svelte-1809940787', '' );
+	setAttribute( g, 'svelte-670753869', '' );
 	setAttribute( g, 'transform', "translate(0,0)" );
 	
 	appendNode( g, svg );
 	
 	var g1 = createSvgElement( 'g' );
-	setAttribute( g1, 'svelte-1809940787', '' );
+	setAttribute( g1, 'svelte-670753869', '' );
 	setAttribute( g1, 'class', "axes" );
 	
 	appendNode( g1, g );
 	
 	var g2 = createSvgElement( 'g' );
-	setAttribute( g2, 'svelte-1809940787', '' );
+	setAttribute( g2, 'svelte-670753869', '' );
 	setAttribute( g2, 'class', "axis y-axis" );
 	
 	appendNode( g2, g1 );
-	
-	var g3 = createSvgElement( 'g' );
-	setAttribute( g3, 'svelte-1809940787', '' );
-	setAttribute( g3, 'class', "axis x-axis" );
-	
-	appendNode( g3, g1 );
-	
-	var path = createSvgElement( 'path' );
-	setAttribute( path, 'svelte-1809940787', '' );
-	setAttribute( path, 'stroke', "#000" );
-	setAttribute( path, 'd', '' );
-	
-	appendNode( path, g3 );
 	var eachBlock_anchor = createComment();
-	appendNode( eachBlock_anchor, g3 );
+	appendNode( eachBlock_anchor, g2 );
 	var eachBlock_value = root.yTicks;
 	var eachBlock_iterations = [];
 	
 	for ( var i = 0; i < eachBlock_value.length; i += 1 ) {
 		eachBlock_iterations[i] = renderEachBlock( root, eachBlock_value, eachBlock_value[i], i, component );
 		eachBlock_iterations[i].mount( eachBlock_anchor.parentNode, eachBlock_anchor );
+	}
+	
+	var g3 = createSvgElement( 'g' );
+	setAttribute( g3, 'svelte-670753869', '' );
+	setAttribute( g3, 'class', "axis x-axis" );
+	
+	appendNode( g3, g1 );
+	var eachBlock1_anchor = createComment();
+	appendNode( eachBlock1_anchor, g3 );
+	var eachBlock1_value = root.xTicks;
+	var eachBlock1_iterations = [];
+	
+	for ( var i1 = 0; i1 < eachBlock1_value.length; i1 += 1 ) {
+		eachBlock1_iterations[i1] = renderEachBlock1( root, eachBlock1_value, eachBlock1_value[i1], i1, component );
+		eachBlock1_iterations[i1].mount( eachBlock1_anchor.parentNode, eachBlock1_anchor );
 	}
 	
 	var text2 = createText( "\n\n" );
@@ -2721,6 +2726,21 @@ function renderMainFragment ( root, component ) {
 			
 			eachBlock_iterations.length = eachBlock_value.length;
 			
+			var eachBlock1_value = root.xTicks;
+			
+			for ( var i1 = 0; i1 < eachBlock1_value.length; i1 += 1 ) {
+				if ( !eachBlock1_iterations[i1] ) {
+					eachBlock1_iterations[i1] = renderEachBlock1( root, eachBlock1_value, eachBlock1_value[i1], i1, component );
+					eachBlock1_iterations[i1].mount( eachBlock1_anchor.parentNode, eachBlock1_anchor );
+				} else {
+					eachBlock1_iterations[i1].update( changed, root, eachBlock1_value, eachBlock1_value[i1], i1 );
+				}
+			}
+			
+			teardownEach( eachBlock1_iterations, true, eachBlock1_value.length );
+			
+			eachBlock1_iterations.length = eachBlock1_value.length;
+			
 			var nested_changes = {};
 			
 			if ( 'foo' in changed ) nested_changes.foo = root.foo;
@@ -2730,6 +2750,8 @@ function renderMainFragment ( root, component ) {
 		
 		teardown: function ( detach ) {
 			teardownEach( eachBlock_iterations, false );
+			
+			teardownEach( eachBlock1_iterations, false );
 			
 			nested.teardown( detach );
 			
@@ -2743,15 +2765,26 @@ function renderMainFragment ( root, component ) {
 	};
 }
 
+function renderEachBlock1 ( root, eachBlock1_value, tick, tick__index, component ) {
+	
+
+	return {
+		mount: noop,
+		
+		update: noop,
+		
+		teardown: noop,
+	};
+}
+
 function renderEachBlock ( root, eachBlock_value, tick, tick__index, component ) {
 	var g = createSvgElement( 'g' );
-	setAttribute( g, 'svelte-1809940787', '' );
-	setAttribute( g, 'class', "tick" );
-	setAttribute( g, 'transform', "translate( " + ( root.padding.left ) + ", " + ( root.yScale(tick) ) + " )" );
+	setAttribute( g, 'svelte-670753869', '' );
+	setAttribute( g, 'class', "tick tick-" + ( tick ) );
+	setAttribute( g, 'transform', "translate( " + ( root.padding.left ) + ", " + ( root.yScale(tick) + root.padding.top ) + " )" );
 	
 	var line = createSvgElement( 'line' );
-	setAttribute( line, 'svelte-1809940787', '' );
-	setAttribute( line, 'transform', "translate( " + ( root.padding.left * 1.5 ) + ", 0 )" );
+	setAttribute( line, 'svelte-670753869', '' );
 	setAttribute( line, 'stroke', "#000" );
 	setAttribute( line, 'x2', "100%" );
 	setAttribute( line, 'y1', "0" );
@@ -2760,14 +2793,14 @@ function renderEachBlock ( root, eachBlock_value, tick, tick__index, component )
 	appendNode( line, g );
 	
 	var text = createSvgElement( 'text' );
-	setAttribute( text, 'svelte-1809940787', '' );
+	setAttribute( text, 'svelte-670753869', '' );
 	setAttribute( text, 'fill', "#000" );
-	setAttribute( text, 'x', root.padding.left );
+	setAttribute( text, 'x', "0" );
 	setAttribute( text, 'y', "0" );
-	setAttribute( text, 'dy', "5" );
+	setAttribute( text, 'dy', "-2" );
 	
 	appendNode( text, g );
-	var text1 = createText( tick );
+	var text1 = createText( tick !== 0 ? tick : '' );
 	appendNode( text1, text );
 
 	return {
@@ -2776,13 +2809,10 @@ function renderEachBlock ( root, eachBlock_value, tick, tick__index, component )
 		},
 		
 		update: function ( changed, root, eachBlock_value, tick, tick__index ) {
-			setAttribute( g, 'transform', "translate( " + ( root.padding.left ) + ", " + ( root.yScale(tick) ) + " )" );
+			setAttribute( g, 'class', "tick tick-" + ( tick ) );
+			setAttribute( g, 'transform', "translate( " + ( root.padding.left ) + ", " + ( root.yScale(tick) + root.padding.top ) + " )" );
 			
-			setAttribute( line, 'transform', "translate( " + ( root.padding.left * 1.5 ) + ", 0 )" );
-			
-			setAttribute( text, 'x', root.padding.left );
-			
-			text1.data = tick;
+			text1.data = tick !== 0 ? tick : '';
 		},
 		
 		teardown: function ( detach ) {
