@@ -1,6 +1,7 @@
 <h1>Line chart</h1>
 
 <svg>
+{{#if ready}}
 	<g transform='translate(0,0)'>
 		<g class='axes'>
 			<!-- y axis -->
@@ -21,6 +22,7 @@
 			</g>
 		</g>
 	</g>
+{{/if}}
 </svg>
 
 <Nested foo='{{foo}}'/>
@@ -64,19 +66,15 @@
 				height: 200,
 				foo: 'bar',
 				yTicks:  [0, 10, 20, 30, 40, 50 ],
-				xTicks: [1990, 1995, 2000, 2005, 2010, 2015]
+				xTicks: [1990, 1995, 2000, 2005, 2010, 2015],
+				projects: [],
+				ready: false
 			};
 		},
 		components: {
 			Nested
 		},
 		computed: {
-			hours: function ( hrs ) {
-				//var time = this.get('hrs');
-				
-				console.log(hrs,' time')
-				return hrs * 3;
-			},
 			yScale: function ( padding, height ) {
 				return scaleLinear()
 					.domain([0, 50])
@@ -88,4 +86,18 @@
 		}
 
 	};
+
+	(function () {
+		  var xhttp = new XMLHttpRequest();
+		  xhttp.onreadystatechange = function() {
+		    if (this.readyState == 4 && this.status == 200) {
+		    	var projects = JSON.parse(this.responseText);
+
+		    	//pass data to Svelte app
+		    	app.set({ projects, ready: true })
+		    }
+		  };
+		  xhttp.open("GET", './data/births_by_race.json', true);
+		  xhttp.send();
+	})();
 </script>
