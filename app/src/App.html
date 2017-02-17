@@ -5,10 +5,10 @@
 	<g transform='translate(0,0)'>
 		<g class='axes'>
 			<!-- y axis -->
-			<g class='axis y-axis'>
+			<g class='axis y-axis' transform="translate(0, {{ padding.top }} )">
 				<!-- <path stroke="#000" d=""></path> -->
 				{{#each yTicks as tick}}
-					<g class="tick tick-{{ tick }}" transform="translate( {{ padding.left }}, {{ yScale(tick) + padding.top }} )">
+					<g class="tick tick-{{ tick }}" transform="translate( 0, {{ yScale(tick) - padding.bottom }} )">
 						<line stroke="#000" x2="100%" y1="0" y2="0"></line>
 						<text fill="#000" x="0" y="0" dy="-2">{{ tick !== 0 ? tick : ''}}</text>
 					</g>
@@ -17,7 +17,10 @@
 			<!-- x axis -->
 			<g class='axis x-axis'>
 				{{#each xTicks as tick}}
-
+					<g class="tick tick-{{ tick }}" transform="translate( {{ xScale(tick) }}, {{ height }} )">
+						<!-- <line stroke="#000" x2="100%" y1="0" y2="0"></line> -->
+						<text fill="#000" x="0" y="0" dy="-2">{{ tick !== 0 ? tick : ''}}</text>
+					</g>
 				{{/each}}
 			</g>
 		</g>
@@ -29,7 +32,7 @@
 
 <style>
 	svg {
-		width: 100%;
+		width: 300px;
 		height: 0;
 		padding-bottom: 50%;
 	}
@@ -48,6 +51,9 @@
 	.tick.tick-0 line {
 		stroke-dasharray: 0;
 	}
+	.x-axis .tick text {
+		text-anchor: middle;
+	}
 </style>
 
 <script>
@@ -58,12 +64,13 @@
 		data () {
 			return {
 				padding: {
-					top: 10,
-					right: 10,
-					bottom: 10,
-					left: 10
+					top: 20,
+					right: 15,
+					bottom: 20,
+					left: 25
 				},
 				height: 200,
+				width: 300,
 				foo: 'bar',
 				yTicks:  [0, 10, 20, 30, 40, 50 ],
 				xTicks: [1990, 1995, 2000, 2005, 2010, 2015],
@@ -79,6 +86,11 @@
 				return scaleLinear()
 					.domain([0, 50])
    					.range([height - padding.bottom, padding.top]);
+			},
+			xScale: function ( padding, width ) {
+				return scaleLinear()
+					.domain([1990, 2015])
+   					.range([padding.left, width - padding.right]);
 			}
 		},
 		onrender () {
