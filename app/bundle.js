@@ -2672,7 +2672,7 @@ var template = (function () {
 let addedCss = false;
 function addCss () {
 	var style = createElement( 'style' );
-	style.textContent = "\n\tsvg[svelte-124660518], [svelte-124660518] svg {\n\t\twidth: 300px;\n\t\theight: 0;\n\t\tpadding-bottom: 50%;\n\t}\n\t.tick[svelte-124660518], [svelte-124660518] .tick {\n\t\tfont-family: Arial;\n\t\tfont-size: .825em;\n\t}\n\t.tick  line[svelte-124660518], .tick  [svelte-124660518] line, .tick[svelte-124660518]  line, [svelte-124660518] .tick  line {\n\t\tstroke: #e2e2e2;\n\t\tstroke-dasharray: 2;\n\t}\n\t.tick  text[svelte-124660518], .tick  [svelte-124660518] text, .tick[svelte-124660518]  text, [svelte-124660518] .tick  text {\n\t\tfill: #ccc;\n\t\ttext-anchor: start;\n\t}\n\t.tick.tick-0  line[svelte-124660518], .tick.tick-0  [svelte-124660518] line, .tick.tick-0[svelte-124660518]  line, [svelte-124660518] .tick.tick-0  line {\n\t\tstroke-dasharray: 0;\n\t}\n\t.x-axis  .tick  text[svelte-124660518], .x-axis  .tick  [svelte-124660518] text, .x-axis  .tick[svelte-124660518]  text, .x-axis  [svelte-124660518] .tick  text, .x-axis[svelte-124660518]  .tick  text, [svelte-124660518] .x-axis  .tick  text {\n\t\ttext-anchor: middle;\n\t}\n\t.path-line[svelte-124660518], [svelte-124660518] .path-line {\n\t\tfill: none;\n\t\tstroke: #fb0;\n\t\tstroke-linejoin: round;\n\t\tstroke-linecap: round;\n\t\tstroke-width: 1.5; \n\t}\n";
+	style.textContent = "\nh1[svelte-2642899416], [svelte-2642899416] h1 {\n\tfont-family: Helvetica;\n\tfont-size: 1.25em;\n}\n\tsvg[svelte-2642899416], [svelte-2642899416] svg {\n\t\twidth: 300px;\n\t\theight: 0;\n\t\tpadding-bottom: 50%;\n\t}\n\t.tick[svelte-2642899416], [svelte-2642899416] .tick {\n\t\tfont-family: Arial;\n\t\tfont-size: .825em;\n\t}\n\t.tick  line[svelte-2642899416], .tick  [svelte-2642899416] line, .tick[svelte-2642899416]  line, [svelte-2642899416] .tick  line {\n\t\tstroke: #e2e2e2;\n\t\tstroke-dasharray: 2;\n\t}\n\t.tick  text[svelte-2642899416], .tick  [svelte-2642899416] text, .tick[svelte-2642899416]  text, [svelte-2642899416] .tick  text {\n\t\tfill: #ccc;\n\t\ttext-anchor: start;\n\t}\n\t.tick.tick-0  line[svelte-2642899416], .tick.tick-0  [svelte-2642899416] line, .tick.tick-0[svelte-2642899416]  line, [svelte-2642899416] .tick.tick-0  line {\n\t\tstroke-dasharray: 0;\n\t}\n\t.x-axis  .tick  text[svelte-2642899416], .x-axis  .tick  [svelte-2642899416] text, .x-axis  .tick[svelte-2642899416]  text, .x-axis  [svelte-2642899416] .tick  text, .x-axis[svelte-2642899416]  .tick  text, [svelte-2642899416] .x-axis  .tick  text {\n\t\ttext-anchor: middle;\n\t}\n\t.path-line[svelte-2642899416], [svelte-2642899416] .path-line {\n\t\tfill: none;\n\t\tstroke: #fb0;\n\t\tstroke-linejoin: round;\n\t\tstroke-linecap: round;\n\t\tstroke-width: 1.5; \n\t}\n";
 	appendNode( style, document.head );
 
 	addedCss = true;
@@ -2680,13 +2680,13 @@ function addCss () {
 
 function renderMainFragment ( root, component ) {
 	var h1 = createElement( 'h1' );
-	setAttribute( h1, 'svelte-124660518', '' );
+	setAttribute( h1, 'svelte-2642899416', '' );
 	
-	appendNode( createText( "Line chart" ), h1 );
+	appendNode( createText( "Line chart: Us birth rate by year" ), h1 );
 	var text1 = createText( "\n\n" );
 	
 	var svg = createSvgElement( 'svg' );
-	setAttribute( svg, 'svelte-124660518', '' );
+	setAttribute( svg, 'svelte-2642899416', '' );
 	
 	var ifBlock_anchor = createComment();
 	appendNode( ifBlock_anchor, svg );
@@ -2754,17 +2754,17 @@ function renderMainFragment ( root, component ) {
 
 function renderIfBlock_0 ( root, component ) {
 	var g = createSvgElement( 'g' );
-	setAttribute( g, 'svelte-124660518', '' );
+	setAttribute( g, 'svelte-2642899416', '' );
 	setAttribute( g, 'transform', "translate(0,0)" );
 	
 	var g1 = createSvgElement( 'g' );
-	setAttribute( g1, 'svelte-124660518', '' );
+	setAttribute( g1, 'svelte-2642899416', '' );
 	setAttribute( g1, 'class', "axes" );
 	
 	appendNode( g1, g );
 	
 	var g2 = createSvgElement( 'g' );
-	setAttribute( g2, 'svelte-124660518', '' );
+	setAttribute( g2, 'svelte-2642899416', '' );
 	setAttribute( g2, 'class', "axis y-axis" );
 	setAttribute( g2, 'transform', "translate(0, " + ( root.padding.top ) + " )" );
 	
@@ -2780,7 +2780,7 @@ function renderIfBlock_0 ( root, component ) {
 	}
 	
 	var g3 = createSvgElement( 'g' );
-	setAttribute( g3, 'svelte-124660518', '' );
+	setAttribute( g3, 'svelte-2642899416', '' );
 	setAttribute( g3, 'class', "axis x-axis" );
 	
 	appendNode( g3, g1 );
@@ -2795,7 +2795,7 @@ function renderIfBlock_0 ( root, component ) {
 	}
 	
 	var path = createSvgElement( 'path' );
-	setAttribute( path, 'svelte-124660518', '' );
+	setAttribute( path, 'svelte-2642899416', '' );
 	setAttribute( path, 'class', "path-line" );
 	setAttribute( path, 'd', root.path );
 
@@ -2856,12 +2856,12 @@ function renderIfBlock_0 ( root, component ) {
 
 function renderEachBlock1 ( root, eachBlock1_value, tick, tick__index, component ) {
 	var g = createSvgElement( 'g' );
-	setAttribute( g, 'svelte-124660518', '' );
+	setAttribute( g, 'svelte-2642899416', '' );
 	setAttribute( g, 'class', "tick tick-" + ( tick ) );
 	setAttribute( g, 'transform', "translate( " + ( root.xScale(tick) ) + ", " + ( root.height ) + " )" );
 	
 	var text = createSvgElement( 'text' );
-	setAttribute( text, 'svelte-124660518', '' );
+	setAttribute( text, 'svelte-2642899416', '' );
 	setAttribute( text, 'fill', "#000" );
 	setAttribute( text, 'x', "0" );
 	setAttribute( text, 'y', "0" );
@@ -2893,12 +2893,12 @@ function renderEachBlock1 ( root, eachBlock1_value, tick, tick__index, component
 
 function renderEachBlock ( root, eachBlock_value, tick, tick__index, component ) {
 	var g = createSvgElement( 'g' );
-	setAttribute( g, 'svelte-124660518', '' );
+	setAttribute( g, 'svelte-2642899416', '' );
 	setAttribute( g, 'class', "tick tick-" + ( tick ) );
 	setAttribute( g, 'transform', "translate( 0, " + ( root.yScale(tick) - root.padding.bottom ) + " )" );
 	
 	var line = createSvgElement( 'line' );
-	setAttribute( line, 'svelte-124660518', '' );
+	setAttribute( line, 'svelte-2642899416', '' );
 	setAttribute( line, 'stroke', "#000" );
 	setAttribute( line, 'x2', "100%" );
 	setAttribute( line, 'y1', "0" );
@@ -2907,7 +2907,7 @@ function renderEachBlock ( root, eachBlock_value, tick, tick__index, component )
 	appendNode( line, g );
 	
 	var text = createSvgElement( 'text' );
-	setAttribute( text, 'svelte-124660518', '' );
+	setAttribute( text, 'svelte-2642899416', '' );
 	setAttribute( text, 'fill', "#000" );
 	setAttribute( text, 'x', "0" );
 	setAttribute( text, 'y', "0" );
