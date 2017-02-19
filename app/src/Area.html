@@ -1,0 +1,112 @@
+<h1>Area chart: US birth rate by year</h1>
+<p>Source: <a href='https://www.cdc.gov/nchs/data/nvsr/nvsr66/nvsr66_01.pdf' target='_blank'>CDC</a></p>
+
+<svg>
+	<g class='area'>
+	{{#if ready}}
+		<g transform='translate(0,0)'>
+			<g class='axes'>
+				<!-- y axis -->
+				<g class='axis y-axis' transform="translate(0, {{ padding.top }} )">
+					<!-- <path stroke="#000" d=""></path> -->
+					{{#each yTicks as tick}}
+						<g class="tick tick-{{ tick }}" transform="translate( 0, {{ yScale(tick) - padding.bottom }} )">
+							<line stroke="#000" x2="100%" y1="0" y2="0"></line>
+							<text fill="#000" x="0" y="0" dy="-2">{{ tick !== 0 ? tick : ''}}</text>
+						</g>
+					{{/each}}
+				</g>
+				<!-- x axis -->
+				<g class='axis x-axis'>
+					{{#each xTicks as tick}}
+						<g class="tick tick-{{ tick }}" transform="translate( {{ xScale(tick) }}, {{ height }} )">
+							<!-- <line stroke="#000" x2="100%" y1="0" y2="0"></line> -->
+							<text fill="#000" x="0" y="0" dy="-2">{{ tick !== 0 ? tick : ''}}</text>
+						</g>
+					{{/each}}
+				</g>
+			</g>
+		</g>
+
+		<path class='path-area' d="{{ areaPath }}"></path>
+	{{/if}}
+	</g>
+</svg>
+
+<!-- <Nested foo='{{foo}}'/>
+ -->
+<style>
+	.path-area {
+		fill: #fb0;
+		stroke: transparent;
+		stroke-linejoin: round;
+		stroke-linecap: round;
+		stroke-width: 2; 
+		opacity: 0.5;
+	}
+</style>
+
+<script>
+	import Nested from './Nested.html';
+	import { scaleLinear } from "d3-scale";
+
+	export default {
+		data () {
+			return {
+				padding: {
+					top: 20,
+					right: 15,
+					bottom: 20,
+					left: 25
+				},
+				height: 200,
+				width: 300,
+				foo: 'bar',
+				yTicks:  [0, 5, 10, 15, 20 ],
+				xTicks: [1990, 1995, 2000, 2005, 2010, 2015]
+			};
+		},
+		components: {
+			Nested
+		},
+		computed: {
+			yScale: function ( padding, height, yTicks ) {
+				return scaleLinear()
+					.domain([Math.min.apply(null, yTicks), Math.max.apply(null, yTicks)])
+   					.range([height - padding.bottom, padding.top]);
+			},
+			xScale: function ( padding, width, xTicks ) {
+				return scaleLinear()
+					.domain([Math.min.apply(null, xTicks), Math.max.apply(null, xTicks)])
+   					.range([padding.left, width - padding.right]);
+			},
+			areaPath ( projects, xScale, yScale ) {
+				
+				var path = '';
+				var years = [];
+				var initialpoint;
+
+				// make path
+				projects.forEach(function (datapoint, i) {
+					var year = datapoint.year;
+					years.push(year)
+
+					if (i === 0) {
+						path = 'M' + xScale(year) + ' ' + yScale(datapoint.birthrate_all) + ' ';
+						initialpoint = 'L ' + xScale(year) + ' ' + yScale(datapoint.birthrate_all) + ' ';
+					} else {
+						path += 'L ' + xScale(year) + ' ' + yScale(datapoint.birthrate_all) + ' ';
+					}
+				})
+
+				path += 'L ' + xScale(years[years.length-1]) + ' ' + yScale(0) + ' ' + 'L ' + xScale(years[0]) + ' ' + yScale(0) + ' ';
+			
+				return path;
+			}
+		},
+		onrender () {
+			console.log('rendered')
+		}
+
+	};
+</script>

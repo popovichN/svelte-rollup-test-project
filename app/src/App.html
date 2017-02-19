@@ -1,136 +1,60 @@
-<h1>Line chart: US birth rate by year</h1>
-<p>Source: <a href='https://www.cdc.gov/nchs/data/nvsr/nvsr66/nvsr66_01.pdf' target='_blank'>CDC</a></p>
-<svg>
-{{#if ready}}
-	<g transform='translate(0,0)'>
-		<g class='axes'>
-			<!-- y axis -->
-			<g class='axis y-axis' transform="translate(0, {{ padding.top }} )">
-				<!-- <path stroke="#000" d=""></path> -->
-				{{#each yTicks as tick}}
-					<g class="tick tick-{{ tick }}" transform="translate( 0, {{ yScale(tick) - padding.bottom }} )">
-						<line stroke="#000" x2="100%" y1="0" y2="0"></line>
-						<text fill="#000" x="0" y="0" dy="-2">{{ tick !== 0 ? tick : ''}}</text>
-					</g>
-				{{/each}}
-			</g>
-			<!-- x axis -->
-			<g class='axis x-axis'>
-				{{#each xTicks as tick}}
-					<g class="tick tick-{{ tick }}" transform="translate( {{ xScale(tick) }}, {{ height }} )">
-						<!-- <line stroke="#000" x2="100%" y1="0" y2="0"></line> -->
-						<text fill="#000" x="0" y="0" dy="-2">{{ tick !== 0 ? tick : ''}}</text>
-					</g>
-				{{/each}}
-			</g>
-		</g>
-	</g>
+<div class='charts'>
+	<Line projects='{{projects}}' ready='{{ready}}' />
+	<Area projects='{{projects}}' ready='{{ready}}' />
+</div>
 
-	<path class='path-line' d="{{ path }}"></path>
-{{/if}}
-</svg>
-
-<!-- <Nested foo='{{foo}}'/>
- -->
 <style>
-	h1,
-	p {
+	.charts h1,
+	.charts p {
 		font-family: Helvetica;
 	}
-	h1 {
+	.charts h1 {
 		font-size: 1.25em;
 
 	}	
-	p {
+	.charts p {
 		font-size: .825em; 
 		color: #ccc;
 	}
-	svg {
+	.charts svg {
 		width: 300px;
 		height: 0;
-		padding-bottom: 50%;
+		padding-bottom: 55%;
 	}
-	.tick {
+	.charts .tick {
 		font-family: Arial;
 		font-size: .825em;
 	}
-	.tick line {
+	.charts .tick line {
 		stroke: #e2e2e2;
 		stroke-dasharray: 2;
 	}
-	.tick text {
+	.charts .tick text {
 		fill: #ccc;
 		text-anchor: start;
 	}
-	.tick.tick-0 line {
+	.charts .tick.tick-0 line {
 		stroke-dasharray: 0;
 	}
-	.x-axis .tick text {
+	.charts .x-axis .tick text {
 		text-anchor: middle;
-	}
-	.path-line {
-		fill: none;
-		stroke: #fb0;
-		stroke-linejoin: round;
-		stroke-linecap: round;
-		stroke-width: 2; 
 	}
 </style>
 
 <script>
-	import Nested from './Nested.html';
-	import { scaleLinear } from "d3-scale";
+	import Line from './Line.html';
+	import Area from './Area.html';
 
 	export default {
 		data () {
 			return {
-				padding: {
-					top: 20,
-					right: 15,
-					bottom: 20,
-					left: 25
-				},
-				height: 200,
-				width: 300,
-				foo: 'bar',
-				yTicks:  [0, 5, 10, 15, 20 ],
-				xTicks: [1990, 1995, 2000, 2005, 2010, 2015],
 				projects: [],
 				ready: false
 			};
 		},
 		components: {
-			Nested
-		},
-		computed: {
-			yScale: function ( padding, height, yTicks ) {
-				return scaleLinear()
-					.domain([Math.min.apply(null, yTicks), Math.max.apply(null, yTicks)])
-   					.range([height - padding.bottom, padding.top]);
-			},
-			xScale: function ( padding, width, xTicks ) {
-				return scaleLinear()
-					.domain([Math.min.apply(null, xTicks), Math.max.apply(null, xTicks)])
-   					.range([padding.left, width - padding.right]);
-			},
-			path ( projects, xScale, yScale ) {
-				
-				var path = '';
-
-				// make path
-				projects.forEach(function (datapoint, i) {
-					var year = datapoint.year;
-
-					if (i === 0) {
-						path = 'M' + xScale(year) + ' ' + yScale(datapoint.birthrate_all) + ' ';
-					} else {
-						path += 'L ' + xScale(year) + ' ' + yScale(datapoint.birthrate_all) + ' ';
-
-					}
-				})
-			
-				return path;
-			}
+			Line,
+			Area
 		},
 		onrender () {
 			console.log('rendered')

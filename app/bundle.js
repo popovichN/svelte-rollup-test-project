@@ -1,193 +1,6 @@
 (function () {
 'use strict';
 
-function appendNode ( node, target ) {
-	target.appendChild( node );
-}
-
-function insertNode ( node, target, anchor ) {
-	target.insertBefore( node, anchor );
-}
-
-function detachNode ( node ) {
-	node.parentNode.removeChild( node );
-}
-
-function teardownEach ( iterations, detach, start ) {
-	for ( var i = ( start || 0 ); i < iterations.length; i += 1 ) {
-		iterations[i].teardown( detach );
-	}
-}
-
-function createElement ( name ) {
-	return document.createElement( name );
-}
-
-function createSvgElement ( name ) {
-	return document.createElementNS( 'http://www.w3.org/2000/svg', name );
-}
-
-function createText ( data ) {
-	return document.createTextNode( data );
-}
-
-function createComment () {
-	return document.createComment( '' );
-}
-
-function setAttribute ( node, attribute, value ) {
-	node.setAttribute ( attribute, value );
-}
-
-function get ( key ) {
-	return key ? this._state[ key ] : this._state;
-}
-
-function fire ( eventName, data ) {
-	var handlers = eventName in this._handlers && this._handlers[ eventName ].slice();
-	if ( !handlers ) return;
-
-	for ( var i = 0; i < handlers.length; i += 1 ) {
-		handlers[i].call( this, data );
-	}
-}
-
-function observe ( key, callback, options ) {
-	var group = ( options && options.defer ) ? this._observers.pre : this._observers.post;
-
-	( group[ key ] || ( group[ key ] = [] ) ).push( callback );
-
-	if ( !options || options.init !== false ) {
-		callback.__calling = true;
-		callback.call( this, this._state[ key ] );
-		callback.__calling = false;
-	}
-
-	return {
-		cancel: function () {
-			var index = group[ key ].indexOf( callback );
-			if ( ~index ) group[ key ].splice( index, 1 );
-		}
-	};
-}
-
-function on ( eventName, handler ) {
-	var handlers = this._handlers[ eventName ] || ( this._handlers[ eventName ] = [] );
-	handlers.push( handler );
-
-	return {
-		cancel: function () {
-			var index = handlers.indexOf( handler );
-			if ( ~index ) handlers.splice( index, 1 );
-		}
-	};
-}
-
-function set ( newState ) {
-	this._set( newState );
-	( this._root || this )._flush();
-}
-
-function _flush () {
-	if ( !this._renderHooks ) return;
-
-	while ( this._renderHooks.length ) {
-		var hook = this._renderHooks.pop();
-		hook.fn.call( hook.context );
-	}
-}
-
-function dispatchObservers ( component, group, newState, oldState ) {
-	for ( var key in group ) {
-		if ( !( key in newState ) ) continue;
-
-		var newValue = newState[ key ];
-		var oldValue = oldState[ key ];
-
-		if ( newValue === oldValue && typeof newValue !== 'object' ) continue;
-
-		var callbacks = group[ key ];
-		if ( !callbacks ) continue;
-
-		for ( var i = 0; i < callbacks.length; i += 1 ) {
-			var callback = callbacks[i];
-			if ( callback.__calling ) continue;
-
-			callback.__calling = true;
-			callback.call( component, newValue, oldValue );
-			callback.__calling = false;
-		}
-	}
-}
-
-function renderMainFragment$1 ( root, component ) {
-	var p = createElement( 'p' );
-	
-	appendNode( createText( "foo is " ), p );
-	var text1 = createText( root.foo );
-	appendNode( text1, p );
-
-	return {
-		mount: function ( target, anchor ) {
-			insertNode( p, target, anchor );
-		},
-		
-		update: function ( changed, root ) {
-			text1.data = root.foo;
-		},
-		
-		teardown: function ( detach ) {
-			if ( detach ) {
-				detachNode( p );
-			}
-		}
-	};
-}
-
-function Nested ( options ) {
-	options = options || {};
-	
-	this._state = options.data || {};
-
-	this._observers = {
-		pre: Object.create( null ),
-		post: Object.create( null )
-	};
-
-	this._handlers = Object.create( null );
-
-	this._root = options._root;
-	this._yield = options._yield;
-
-	this._fragment = renderMainFragment$1( this._state, this );
-	if ( options.target ) this._fragment.mount( options.target, null );
-}
-
-Nested.prototype.get = get;
-Nested.prototype.fire = fire;
-Nested.prototype.observe = observe;
-Nested.prototype.on = on;
-Nested.prototype.set = set;
-Nested.prototype._flush = _flush;
-
-Nested.prototype._set = function _set ( newState ) {
-	var oldState = this._state;
-	this._state = Object.assign( {}, oldState, newState );
-	
-	dispatchObservers( this, this._observers.pre, newState, oldState );
-	if ( this._fragment ) this._fragment.update( newState, this._state );
-	dispatchObservers( this, this._observers.post, newState, oldState );
-};
-
-Nested.prototype.teardown = function teardown ( detach ) {
-	this.fire( 'teardown' );
-
-	this._fragment.teardown( detach !== false );
-	this._fragment = null;
-
-	this._state = {};
-};
-
 var ascending = function(a, b) {
   return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
 };
@@ -416,7 +229,7 @@ function Set() {}
 
 var proto = map$1.prototype;
 
-Set.prototype = set$1.prototype = {
+Set.prototype = set.prototype = {
   constructor: Set,
   has: proto.has,
   add: function(value) {
@@ -432,7 +245,7 @@ Set.prototype = set$1.prototype = {
   each: proto.each
 };
 
-function set$1(object, f) {
+function set(object, f) {
   var set = new Set;
 
   // Copy constructor.
@@ -2578,22 +2391,141 @@ var cool = cubehelixLong(cubehelix(260, 0.75, 0.35), cubehelix(80, 1.50, 0.8));
 
 var rainbow = cubehelix();
 
-function applyComputations ( state, newState, oldState, isInitial ) {
-	if ( isInitial || ( 'padding' in newState && typeof state.padding === 'object' || state.padding !== oldState.padding ) || ( 'height' in newState && typeof state.height === 'object' || state.height !== oldState.height ) || ( 'yTicks' in newState && typeof state.yTicks === 'object' || state.yTicks !== oldState.yTicks ) ) {
-		state.yScale = newState.yScale = template.computed.yScale( state.padding, state.height, state.yTicks );
-	}
-	
-	if ( isInitial || ( 'padding' in newState && typeof state.padding === 'object' || state.padding !== oldState.padding ) || ( 'width' in newState && typeof state.width === 'object' || state.width !== oldState.width ) || ( 'xTicks' in newState && typeof state.xTicks === 'object' || state.xTicks !== oldState.xTicks ) ) {
-		state.xScale = newState.xScale = template.computed.xScale( state.padding, state.width, state.xTicks );
-	}
-	
-	if ( isInitial || ( 'projects' in newState && typeof state.projects === 'object' || state.projects !== oldState.projects ) || ( 'xScale' in newState && typeof state.xScale === 'object' || state.xScale !== oldState.xScale ) || ( 'yScale' in newState && typeof state.yScale === 'object' || state.yScale !== oldState.yScale ) ) {
-		state.path = newState.path = template.computed.path( state.projects, state.xScale, state.yScale );
+function appendNode ( node, target ) {
+	target.appendChild( node );
+}
+
+function insertNode ( node, target, anchor ) {
+	target.insertBefore( node, anchor );
+}
+
+function detachNode ( node ) {
+	node.parentNode.removeChild( node );
+}
+
+function teardownEach ( iterations, detach, start ) {
+	for ( var i = ( start || 0 ); i < iterations.length; i += 1 ) {
+		iterations[i].teardown( detach );
 	}
 }
 
-var template = (function () {
-	var template = {
+function createElement ( name ) {
+	return document.createElement( name );
+}
+
+function createSvgElement ( name ) {
+	return document.createElementNS( 'http://www.w3.org/2000/svg', name );
+}
+
+function createText ( data ) {
+	return document.createTextNode( data );
+}
+
+function createComment () {
+	return document.createComment( '' );
+}
+
+function setAttribute ( node, attribute, value ) {
+	node.setAttribute ( attribute, value );
+}
+
+function get ( key ) {
+	return key ? this._state[ key ] : this._state;
+}
+
+function fire ( eventName, data ) {
+	var handlers = eventName in this._handlers && this._handlers[ eventName ].slice();
+	if ( !handlers ) return;
+
+	for ( var i = 0; i < handlers.length; i += 1 ) {
+		handlers[i].call( this, data );
+	}
+}
+
+function observe ( key, callback, options ) {
+	var group = ( options && options.defer ) ? this._observers.pre : this._observers.post;
+
+	( group[ key ] || ( group[ key ] = [] ) ).push( callback );
+
+	if ( !options || options.init !== false ) {
+		callback.__calling = true;
+		callback.call( this, this._state[ key ] );
+		callback.__calling = false;
+	}
+
+	return {
+		cancel: function () {
+			var index = group[ key ].indexOf( callback );
+			if ( ~index ) group[ key ].splice( index, 1 );
+		}
+	};
+}
+
+function on ( eventName, handler ) {
+	var handlers = this._handlers[ eventName ] || ( this._handlers[ eventName ] = [] );
+	handlers.push( handler );
+
+	return {
+		cancel: function () {
+			var index = handlers.indexOf( handler );
+			if ( ~index ) handlers.splice( index, 1 );
+		}
+	};
+}
+
+function set$2 ( newState ) {
+	this._set( newState );
+	( this._root || this )._flush();
+}
+
+function _flush () {
+	if ( !this._renderHooks ) return;
+
+	while ( this._renderHooks.length ) {
+		var hook = this._renderHooks.pop();
+		hook.fn.call( hook.context );
+	}
+}
+
+function dispatchObservers ( component, group, newState, oldState ) {
+	for ( var key in group ) {
+		if ( !( key in newState ) ) continue;
+
+		var newValue = newState[ key ];
+		var oldValue = oldState[ key ];
+
+		if ( newValue === oldValue && typeof newValue !== 'object' ) continue;
+
+		var callbacks = group[ key ];
+		if ( !callbacks ) continue;
+
+		for ( var i = 0; i < callbacks.length; i += 1 ) {
+			var callback = callbacks[i];
+			if ( callback.__calling ) continue;
+
+			callback.__calling = true;
+			callback.call( component, newValue, oldValue );
+			callback.__calling = false;
+		}
+	}
+}
+
+function applyComputations ( state, newState, oldState, isInitial ) {
+	if ( isInitial || ( 'padding' in newState && typeof state.padding === 'object' || state.padding !== oldState.padding ) || ( 'height' in newState && typeof state.height === 'object' || state.height !== oldState.height ) || ( 'yTicks' in newState && typeof state.yTicks === 'object' || state.yTicks !== oldState.yTicks ) ) {
+		state.yScale = newState.yScale = template$1.computed.yScale( state.padding, state.height, state.yTicks );
+	}
+	
+	if ( isInitial || ( 'padding' in newState && typeof state.padding === 'object' || state.padding !== oldState.padding ) || ( 'width' in newState && typeof state.width === 'object' || state.width !== oldState.width ) || ( 'xTicks' in newState && typeof state.xTicks === 'object' || state.xTicks !== oldState.xTicks ) ) {
+		state.xScale = newState.xScale = template$1.computed.xScale( state.padding, state.width, state.xTicks );
+	}
+	
+	if ( isInitial || ( 'projects' in newState && typeof state.projects === 'object' || state.projects !== oldState.projects ) || ( 'xScale' in newState && typeof state.xScale === 'object' || state.xScale !== oldState.xScale ) || ( 'yScale' in newState && typeof state.yScale === 'object' || state.yScale !== oldState.yScale ) ) {
+		state.path = newState.path = template$1.computed.path( state.projects, state.xScale, state.yScale );
+	}
+}
+
+var template$1 = (function () {
+	return {
 		data () {
 			return {
 				padding: {
@@ -2606,13 +2538,8 @@ var template = (function () {
 				width: 300,
 				foo: 'bar',
 				yTicks:  [0, 5, 10, 15, 20 ],
-				xTicks: [1990, 1995, 2000, 2005, 2010, 2015],
-				projects: [],
-				ready: false
+				xTicks: [1990, 1995, 2000, 2005, 2010, 2015]
 			};
-		},
-		components: {
-			Nested
 		},
 		computed: {
 			yScale: function ( padding, height, yTicks ) {
@@ -2643,67 +2570,51 @@ var template = (function () {
 			
 				return path;
 			}
-		},
-		onrender () {
-			console.log('rendered');
 		}
 
 	};
-
-	(function () {
-		  var xhttp = new XMLHttpRequest();
-		  xhttp.onreadystatechange = function() {
-		    if (this.readyState == 4 && this.status == 200) {
-		    	var projects = JSON.parse(this.responseText);
-
-		    	//pass data to Svelte app
-		    	app.set({ projects, ready: true });
-		    }
-		  };
-		  xhttp.open("GET", './data/births_by_race.json', true);
-		  xhttp.send();
-	})();
-
-
-
-	return template;
 }());
 
-let addedCss = false;
-function addCss () {
+let addedCss$1 = false;
+function addCss$1 () {
 	var style = createElement( 'style' );
-	style.textContent = "\n\th1[svelte-3921854617], [svelte-3921854617] h1, p[svelte-3921854617], [svelte-3921854617] p {\n\t\tfont-family: Helvetica;\n\t}\n\th1[svelte-3921854617], [svelte-3921854617] h1 {\n\t\tfont-size: 1.25em;\n\n\t}\t\n\tp[svelte-3921854617], [svelte-3921854617] p {\n\t\tfont-size: .825em; \n\t\tcolor: #ccc;\n\t}\n\tsvg[svelte-3921854617], [svelte-3921854617] svg {\n\t\twidth: 300px;\n\t\theight: 0;\n\t\tpadding-bottom: 50%;\n\t}\n\t.tick[svelte-3921854617], [svelte-3921854617] .tick {\n\t\tfont-family: Arial;\n\t\tfont-size: .825em;\n\t}\n\t.tick  line[svelte-3921854617], .tick  [svelte-3921854617] line, .tick[svelte-3921854617]  line, [svelte-3921854617] .tick  line {\n\t\tstroke: #e2e2e2;\n\t\tstroke-dasharray: 2;\n\t}\n\t.tick  text[svelte-3921854617], .tick  [svelte-3921854617] text, .tick[svelte-3921854617]  text, [svelte-3921854617] .tick  text {\n\t\tfill: #ccc;\n\t\ttext-anchor: start;\n\t}\n\t.tick.tick-0  line[svelte-3921854617], .tick.tick-0  [svelte-3921854617] line, .tick.tick-0[svelte-3921854617]  line, [svelte-3921854617] .tick.tick-0  line {\n\t\tstroke-dasharray: 0;\n\t}\n\t.x-axis  .tick  text[svelte-3921854617], .x-axis  .tick  [svelte-3921854617] text, .x-axis  .tick[svelte-3921854617]  text, .x-axis  [svelte-3921854617] .tick  text, .x-axis[svelte-3921854617]  .tick  text, [svelte-3921854617] .x-axis  .tick  text {\n\t\ttext-anchor: middle;\n\t}\n\t.path-line[svelte-3921854617], [svelte-3921854617] .path-line {\n\t\tfill: none;\n\t\tstroke: #fb0;\n\t\tstroke-linejoin: round;\n\t\tstroke-linecap: round;\n\t\tstroke-width: 2; \n\t}\n";
+	style.textContent = "\n\n\t.path-line[svelte-2758826110], [svelte-2758826110] .path-line {\n\t\tfill: none;\n\t\tstroke: #fb0;\n\t\tstroke-linejoin: round;\n\t\tstroke-linecap: round;\n\t\tstroke-width: 2; \n\t}\n";
 	appendNode( style, document.head );
 
-	addedCss = true;
+	addedCss$1 = true;
 }
 
-function renderMainFragment ( root, component ) {
+function renderMainFragment$1 ( root, component ) {
 	var h1 = createElement( 'h1' );
-	setAttribute( h1, 'svelte-3921854617', '' );
+	setAttribute( h1, 'svelte-2758826110', '' );
 	
 	appendNode( createText( "Line chart: US birth rate by year" ), h1 );
 	var text1 = createText( "\n" );
 	
 	var p = createElement( 'p' );
-	setAttribute( p, 'svelte-3921854617', '' );
+	setAttribute( p, 'svelte-2758826110', '' );
 	
 	appendNode( createText( "Source: " ), p );
 	
 	var a = createElement( 'a' );
-	setAttribute( a, 'svelte-3921854617', '' );
+	setAttribute( a, 'svelte-2758826110', '' );
 	a.href = "https://www.cdc.gov/nchs/data/nvsr/nvsr66/nvsr66_01.pdf";
 	a.target = "_blank";
 	
 	appendNode( a, p );
 	appendNode( createText( "CDC" ), a );
-	var text4 = createText( "\n" );
+	var text4 = createText( "\n\n" );
 	
 	var svg = createSvgElement( 'svg' );
-	setAttribute( svg, 'svelte-3921854617', '' );
+	setAttribute( svg, 'svelte-2758826110', '' );
 	
+	var g = createSvgElement( 'g' );
+	setAttribute( g, 'svelte-2758826110', '' );
+	setAttribute( g, 'class', "line" );
+	
+	appendNode( g, svg );
 	var ifBlock_anchor = createComment();
-	appendNode( ifBlock_anchor, svg );
+	appendNode( ifBlock_anchor, g );
 	
 	function getBlock ( root ) {
 		if ( root.ready ) return renderIfBlock_0;
@@ -2714,7 +2625,6 @@ function renderMainFragment ( root, component ) {
 	var ifBlock = currentBlock && currentBlock( root, component );
 	
 	if ( ifBlock ) ifBlock.mount( ifBlock_anchor.parentNode, ifBlock_anchor );
-	var text5 = createText( "\n\n" );
 
 	return {
 		mount: function ( target, anchor ) {
@@ -2723,7 +2633,6 @@ function renderMainFragment ( root, component ) {
 			insertNode( p, target, anchor );
 			insertNode( text4, target, anchor );
 			insertNode( svg, target, anchor );
-			insertNode( text5, target, anchor );
 		},
 		
 		update: function ( changed, root ) {
@@ -2747,7 +2656,6 @@ function renderMainFragment ( root, component ) {
 				detachNode( p );
 				detachNode( text4 );
 				detachNode( svg );
-				detachNode( text5 );
 			}
 		}
 	};
@@ -2755,17 +2663,17 @@ function renderMainFragment ( root, component ) {
 
 function renderIfBlock_0 ( root, component ) {
 	var g = createSvgElement( 'g' );
-	setAttribute( g, 'svelte-3921854617', '' );
+	setAttribute( g, 'svelte-2758826110', '' );
 	setAttribute( g, 'transform', "translate(0,0)" );
 	
 	var g1 = createSvgElement( 'g' );
-	setAttribute( g1, 'svelte-3921854617', '' );
+	setAttribute( g1, 'svelte-2758826110', '' );
 	setAttribute( g1, 'class', "axes" );
 	
 	appendNode( g1, g );
 	
 	var g2 = createSvgElement( 'g' );
-	setAttribute( g2, 'svelte-3921854617', '' );
+	setAttribute( g2, 'svelte-2758826110', '' );
 	setAttribute( g2, 'class', "axis y-axis" );
 	setAttribute( g2, 'transform', "translate(0, " + ( root.padding.top ) + " )" );
 	
@@ -2781,7 +2689,7 @@ function renderIfBlock_0 ( root, component ) {
 	}
 	
 	var g3 = createSvgElement( 'g' );
-	setAttribute( g3, 'svelte-3921854617', '' );
+	setAttribute( g3, 'svelte-2758826110', '' );
 	setAttribute( g3, 'class', "axis x-axis" );
 	
 	appendNode( g3, g1 );
@@ -2796,7 +2704,7 @@ function renderIfBlock_0 ( root, component ) {
 	}
 	
 	var path = createSvgElement( 'path' );
-	setAttribute( path, 'svelte-3921854617', '' );
+	setAttribute( path, 'svelte-2758826110', '' );
 	setAttribute( path, 'class', "path-line" );
 	setAttribute( path, 'd', root.path );
 
@@ -2857,12 +2765,12 @@ function renderIfBlock_0 ( root, component ) {
 
 function renderEachBlock1 ( root, eachBlock1_value, tick, tick__index, component ) {
 	var g = createSvgElement( 'g' );
-	setAttribute( g, 'svelte-3921854617', '' );
+	setAttribute( g, 'svelte-2758826110', '' );
 	setAttribute( g, 'class', "tick tick-" + ( tick ) );
 	setAttribute( g, 'transform', "translate( " + ( root.xScale(tick) ) + ", " + ( root.height ) + " )" );
 	
 	var text = createSvgElement( 'text' );
-	setAttribute( text, 'svelte-3921854617', '' );
+	setAttribute( text, 'svelte-2758826110', '' );
 	setAttribute( text, 'fill', "#000" );
 	setAttribute( text, 'x', "0" );
 	setAttribute( text, 'y', "0" );
@@ -2894,12 +2802,12 @@ function renderEachBlock1 ( root, eachBlock1_value, tick, tick__index, component
 
 function renderEachBlock ( root, eachBlock_value, tick, tick__index, component ) {
 	var g = createSvgElement( 'g' );
-	setAttribute( g, 'svelte-3921854617', '' );
+	setAttribute( g, 'svelte-2758826110', '' );
 	setAttribute( g, 'class', "tick tick-" + ( tick ) );
 	setAttribute( g, 'transform', "translate( 0, " + ( root.yScale(tick) - root.padding.bottom ) + " )" );
 	
 	var line = createSvgElement( 'line' );
-	setAttribute( line, 'svelte-3921854617', '' );
+	setAttribute( line, 'svelte-2758826110', '' );
 	setAttribute( line, 'stroke', "#000" );
 	setAttribute( line, 'x2', "100%" );
 	setAttribute( line, 'y1', "0" );
@@ -2908,7 +2816,7 @@ function renderEachBlock ( root, eachBlock_value, tick, tick__index, component )
 	appendNode( line, g );
 	
 	var text = createSvgElement( 'text' );
-	setAttribute( text, 'svelte-3921854617', '' );
+	setAttribute( text, 'svelte-2758826110', '' );
 	setAttribute( text, 'fill', "#000" );
 	setAttribute( text, 'x', "0" );
 	setAttribute( text, 'y', "0" );
@@ -2938,10 +2846,10 @@ function renderEachBlock ( root, eachBlock_value, tick, tick__index, component )
 	};
 }
 
-function App ( options ) {
+function Line ( options ) {
 	options = options || {};
 	
-	this._state = Object.assign( template.data(), options.data );
+	this._state = Object.assign( template$1.data(), options.data );
 applyComputations( this._state, this._state, {}, true );
 
 	this._observers = {
@@ -2954,10 +2862,637 @@ applyComputations( this._state, this._state, {}, true );
 	this._root = options._root;
 	this._yield = options._yield;
 
+	if ( !addedCss$1 ) addCss$1();
+	
+	this._fragment = renderMainFragment$1( this._state, this );
+	if ( options.target ) this._fragment.mount( options.target, null );
+}
+
+Line.prototype.get = get;
+Line.prototype.fire = fire;
+Line.prototype.observe = observe;
+Line.prototype.on = on;
+Line.prototype.set = set$2;
+Line.prototype._flush = _flush;
+
+Line.prototype._set = function _set ( newState ) {
+	var oldState = this._state;
+	this._state = Object.assign( {}, oldState, newState );
+	applyComputations( this._state, newState, oldState, false );
+	
+	dispatchObservers( this, this._observers.pre, newState, oldState );
+	if ( this._fragment ) this._fragment.update( newState, this._state );
+	dispatchObservers( this, this._observers.post, newState, oldState );
+};
+
+Line.prototype.teardown = function teardown ( detach ) {
+	this.fire( 'teardown' );
+
+	this._fragment.teardown( detach !== false );
+	this._fragment = null;
+
+	this._state = {};
+};
+
+function renderMainFragment$3 ( root, component ) {
+	var p = createElement( 'p' );
+	
+	appendNode( createText( "foo is " ), p );
+	var text1 = createText( root.foo );
+	appendNode( text1, p );
+
+	return {
+		mount: function ( target, anchor ) {
+			insertNode( p, target, anchor );
+		},
+		
+		update: function ( changed, root ) {
+			text1.data = root.foo;
+		},
+		
+		teardown: function ( detach ) {
+			if ( detach ) {
+				detachNode( p );
+			}
+		}
+	};
+}
+
+function Nested ( options ) {
+	options = options || {};
+	
+	this._state = options.data || {};
+
+	this._observers = {
+		pre: Object.create( null ),
+		post: Object.create( null )
+	};
+
+	this._handlers = Object.create( null );
+
+	this._root = options._root;
+	this._yield = options._yield;
+
+	this._fragment = renderMainFragment$3( this._state, this );
+	if ( options.target ) this._fragment.mount( options.target, null );
+}
+
+Nested.prototype.get = get;
+Nested.prototype.fire = fire;
+Nested.prototype.observe = observe;
+Nested.prototype.on = on;
+Nested.prototype.set = set$2;
+Nested.prototype._flush = _flush;
+
+Nested.prototype._set = function _set ( newState ) {
+	var oldState = this._state;
+	this._state = Object.assign( {}, oldState, newState );
+	
+	dispatchObservers( this, this._observers.pre, newState, oldState );
+	if ( this._fragment ) this._fragment.update( newState, this._state );
+	dispatchObservers( this, this._observers.post, newState, oldState );
+};
+
+Nested.prototype.teardown = function teardown ( detach ) {
+	this.fire( 'teardown' );
+
+	this._fragment.teardown( detach !== false );
+	this._fragment = null;
+
+	this._state = {};
+};
+
+function applyComputations$1 ( state, newState, oldState, isInitial ) {
+	if ( isInitial || ( 'padding' in newState && typeof state.padding === 'object' || state.padding !== oldState.padding ) || ( 'height' in newState && typeof state.height === 'object' || state.height !== oldState.height ) || ( 'yTicks' in newState && typeof state.yTicks === 'object' || state.yTicks !== oldState.yTicks ) ) {
+		state.yScale = newState.yScale = template$2.computed.yScale( state.padding, state.height, state.yTicks );
+	}
+	
+	if ( isInitial || ( 'padding' in newState && typeof state.padding === 'object' || state.padding !== oldState.padding ) || ( 'width' in newState && typeof state.width === 'object' || state.width !== oldState.width ) || ( 'xTicks' in newState && typeof state.xTicks === 'object' || state.xTicks !== oldState.xTicks ) ) {
+		state.xScale = newState.xScale = template$2.computed.xScale( state.padding, state.width, state.xTicks );
+	}
+	
+	if ( isInitial || ( 'projects' in newState && typeof state.projects === 'object' || state.projects !== oldState.projects ) || ( 'xScale' in newState && typeof state.xScale === 'object' || state.xScale !== oldState.xScale ) || ( 'yScale' in newState && typeof state.yScale === 'object' || state.yScale !== oldState.yScale ) ) {
+		state.areaPath = newState.areaPath = template$2.computed.areaPath( state.projects, state.xScale, state.yScale );
+	}
+}
+
+var template$2 = (function () {
+	return {
+		data () {
+			return {
+				padding: {
+					top: 20,
+					right: 15,
+					bottom: 20,
+					left: 25
+				},
+				height: 200,
+				width: 300,
+				foo: 'bar',
+				yTicks:  [0, 5, 10, 15, 20 ],
+				xTicks: [1990, 1995, 2000, 2005, 2010, 2015]
+			};
+		},
+		components: {
+			Nested
+		},
+		computed: {
+			yScale: function ( padding, height, yTicks ) {
+				return linear()
+					.domain([Math.min.apply(null, yTicks), Math.max.apply(null, yTicks)])
+   					.range([height - padding.bottom, padding.top]);
+			},
+			xScale: function ( padding, width, xTicks ) {
+				return linear()
+					.domain([Math.min.apply(null, xTicks), Math.max.apply(null, xTicks)])
+   					.range([padding.left, width - padding.right]);
+			},
+			areaPath ( projects, xScale, yScale ) {
+				
+				var path = '';
+				var years = [];
+				var initialpoint;
+
+				// make path
+				projects.forEach(function (datapoint, i) {
+					var year = datapoint.year;
+					years.push(year);
+
+					if (i === 0) {
+						path = 'M' + xScale(year) + ' ' + yScale(datapoint.birthrate_all) + ' ';
+						initialpoint = 'L ' + xScale(year) + ' ' + yScale(datapoint.birthrate_all) + ' ';
+					} else {
+						path += 'L ' + xScale(year) + ' ' + yScale(datapoint.birthrate_all) + ' ';
+					}
+				});
+
+				path += 'L ' + xScale(years[years.length-1]) + ' ' + yScale(0) + ' ' + 'L ' + xScale(years[0]) + ' ' + yScale(0) + ' ';
+			
+				return path;
+			}
+		},
+		onrender () {
+			console.log('rendered');
+		}
+
+	};
+}());
+
+let addedCss$2 = false;
+function addCss$2 () {
+	var style = createElement( 'style' );
+	style.textContent = "\n\t.path-area[svelte-981876360], [svelte-981876360] .path-area {\n\t\tfill: #fb0;\n\t\tstroke: transparent;\n\t\tstroke-linejoin: round;\n\t\tstroke-linecap: round;\n\t\tstroke-width: 2; \n\t\topacity: 0.5;\n\t}\n";
+	appendNode( style, document.head );
+
+	addedCss$2 = true;
+}
+
+function renderMainFragment$2 ( root, component ) {
+	var h1 = createElement( 'h1' );
+	setAttribute( h1, 'svelte-981876360', '' );
+	
+	appendNode( createText( "Area chart: US birth rate by year" ), h1 );
+	var text1 = createText( "\n" );
+	
+	var p = createElement( 'p' );
+	setAttribute( p, 'svelte-981876360', '' );
+	
+	appendNode( createText( "Source: " ), p );
+	
+	var a = createElement( 'a' );
+	setAttribute( a, 'svelte-981876360', '' );
+	a.href = "https://www.cdc.gov/nchs/data/nvsr/nvsr66/nvsr66_01.pdf";
+	a.target = "_blank";
+	
+	appendNode( a, p );
+	appendNode( createText( "CDC" ), a );
+	var text4 = createText( "\n\n" );
+	
+	var svg = createSvgElement( 'svg' );
+	setAttribute( svg, 'svelte-981876360', '' );
+	
+	var g = createSvgElement( 'g' );
+	setAttribute( g, 'svelte-981876360', '' );
+	setAttribute( g, 'class', "area" );
+	
+	appendNode( g, svg );
+	var ifBlock_anchor = createComment();
+	appendNode( ifBlock_anchor, g );
+	
+	function getBlock ( root ) {
+		if ( root.ready ) return renderIfBlock_0$1;
+		return null;
+	}
+	
+	var currentBlock = getBlock( root );
+	var ifBlock = currentBlock && currentBlock( root, component );
+	
+	if ( ifBlock ) ifBlock.mount( ifBlock_anchor.parentNode, ifBlock_anchor );
+	var text5 = createText( "\n\n" );
+
+	return {
+		mount: function ( target, anchor ) {
+			insertNode( h1, target, anchor );
+			insertNode( text1, target, anchor );
+			insertNode( p, target, anchor );
+			insertNode( text4, target, anchor );
+			insertNode( svg, target, anchor );
+			insertNode( text5, target, anchor );
+		},
+		
+		update: function ( changed, root ) {
+			var _currentBlock = currentBlock;
+			currentBlock = getBlock( root );
+			if ( _currentBlock === currentBlock && ifBlock) {
+				ifBlock.update( changed, root );
+			} else {
+				if ( ifBlock ) ifBlock.teardown( true );
+				ifBlock = currentBlock && currentBlock( root, component );
+				if ( ifBlock ) ifBlock.mount( ifBlock_anchor.parentNode, ifBlock_anchor );
+			}
+		},
+		
+		teardown: function ( detach ) {
+			if ( ifBlock ) ifBlock.teardown( false );
+			
+			if ( detach ) {
+				detachNode( h1 );
+				detachNode( text1 );
+				detachNode( p );
+				detachNode( text4 );
+				detachNode( svg );
+				detachNode( text5 );
+			}
+		}
+	};
+}
+
+function renderIfBlock_0$1 ( root, component ) {
+	var g = createSvgElement( 'g' );
+	setAttribute( g, 'svelte-981876360', '' );
+	setAttribute( g, 'transform', "translate(0,0)" );
+	
+	var g1 = createSvgElement( 'g' );
+	setAttribute( g1, 'svelte-981876360', '' );
+	setAttribute( g1, 'class', "axes" );
+	
+	appendNode( g1, g );
+	
+	var g2 = createSvgElement( 'g' );
+	setAttribute( g2, 'svelte-981876360', '' );
+	setAttribute( g2, 'class', "axis y-axis" );
+	setAttribute( g2, 'transform', "translate(0, " + ( root.padding.top ) + " )" );
+	
+	appendNode( g2, g1 );
+	var eachBlock_anchor = createComment();
+	appendNode( eachBlock_anchor, g2 );
+	var eachBlock_value = root.yTicks;
+	var eachBlock_iterations = [];
+	
+	for ( var i = 0; i < eachBlock_value.length; i += 1 ) {
+		eachBlock_iterations[i] = renderEachBlock$1( root, eachBlock_value, eachBlock_value[i], i, component );
+		eachBlock_iterations[i].mount( eachBlock_anchor.parentNode, eachBlock_anchor );
+	}
+	
+	var g3 = createSvgElement( 'g' );
+	setAttribute( g3, 'svelte-981876360', '' );
+	setAttribute( g3, 'class', "axis x-axis" );
+	
+	appendNode( g3, g1 );
+	var eachBlock1_anchor = createComment();
+	appendNode( eachBlock1_anchor, g3 );
+	var eachBlock1_value = root.xTicks;
+	var eachBlock1_iterations = [];
+	
+	for ( var i1 = 0; i1 < eachBlock1_value.length; i1 += 1 ) {
+		eachBlock1_iterations[i1] = renderEachBlock1$1( root, eachBlock1_value, eachBlock1_value[i1], i1, component );
+		eachBlock1_iterations[i1].mount( eachBlock1_anchor.parentNode, eachBlock1_anchor );
+	}
+	
+	var path = createSvgElement( 'path' );
+	setAttribute( path, 'svelte-981876360', '' );
+	setAttribute( path, 'class', "path-area" );
+	setAttribute( path, 'd', root.areaPath );
+
+	return {
+		mount: function ( target, anchor ) {
+			insertNode( g, target, anchor );
+			insertNode( path, target, anchor );
+		},
+		
+		update: function ( changed, root ) {
+			setAttribute( g2, 'transform', "translate(0, " + ( root.padding.top ) + " )" );
+			
+			var eachBlock_value = root.yTicks;
+			
+			for ( var i = 0; i < eachBlock_value.length; i += 1 ) {
+				if ( !eachBlock_iterations[i] ) {
+					eachBlock_iterations[i] = renderEachBlock$1( root, eachBlock_value, eachBlock_value[i], i, component );
+					eachBlock_iterations[i].mount( eachBlock_anchor.parentNode, eachBlock_anchor );
+				} else {
+					eachBlock_iterations[i].update( changed, root, eachBlock_value, eachBlock_value[i], i );
+				}
+			}
+			
+			teardownEach( eachBlock_iterations, true, eachBlock_value.length );
+			
+			eachBlock_iterations.length = eachBlock_value.length;
+			
+			var eachBlock1_value = root.xTicks;
+			
+			for ( var i1 = 0; i1 < eachBlock1_value.length; i1 += 1 ) {
+				if ( !eachBlock1_iterations[i1] ) {
+					eachBlock1_iterations[i1] = renderEachBlock1$1( root, eachBlock1_value, eachBlock1_value[i1], i1, component );
+					eachBlock1_iterations[i1].mount( eachBlock1_anchor.parentNode, eachBlock1_anchor );
+				} else {
+					eachBlock1_iterations[i1].update( changed, root, eachBlock1_value, eachBlock1_value[i1], i1 );
+				}
+			}
+			
+			teardownEach( eachBlock1_iterations, true, eachBlock1_value.length );
+			
+			eachBlock1_iterations.length = eachBlock1_value.length;
+			
+			setAttribute( path, 'd', root.areaPath );
+		},
+		
+		teardown: function ( detach ) {
+			teardownEach( eachBlock_iterations, false );
+			
+			teardownEach( eachBlock1_iterations, false );
+			
+			if ( detach ) {
+				detachNode( g );
+				detachNode( path );
+			}
+		}
+	};
+}
+
+function renderEachBlock1$1 ( root, eachBlock1_value, tick, tick__index, component ) {
+	var g = createSvgElement( 'g' );
+	setAttribute( g, 'svelte-981876360', '' );
+	setAttribute( g, 'class', "tick tick-" + ( tick ) );
+	setAttribute( g, 'transform', "translate( " + ( root.xScale(tick) ) + ", " + ( root.height ) + " )" );
+	
+	var text = createSvgElement( 'text' );
+	setAttribute( text, 'svelte-981876360', '' );
+	setAttribute( text, 'fill', "#000" );
+	setAttribute( text, 'x', "0" );
+	setAttribute( text, 'y', "0" );
+	setAttribute( text, 'dy', "-2" );
+	
+	appendNode( text, g );
+	var text1 = createText( tick !== 0 ? tick : '' );
+	appendNode( text1, text );
+
+	return {
+		mount: function ( target, anchor ) {
+			insertNode( g, target, anchor );
+		},
+		
+		update: function ( changed, root, eachBlock1_value, tick, tick__index ) {
+			setAttribute( g, 'class', "tick tick-" + ( tick ) );
+			setAttribute( g, 'transform', "translate( " + ( root.xScale(tick) ) + ", " + ( root.height ) + " )" );
+			
+			text1.data = tick !== 0 ? tick : '';
+		},
+		
+		teardown: function ( detach ) {
+			if ( detach ) {
+				detachNode( g );
+			}
+		}
+	};
+}
+
+function renderEachBlock$1 ( root, eachBlock_value, tick, tick__index, component ) {
+	var g = createSvgElement( 'g' );
+	setAttribute( g, 'svelte-981876360', '' );
+	setAttribute( g, 'class', "tick tick-" + ( tick ) );
+	setAttribute( g, 'transform', "translate( 0, " + ( root.yScale(tick) - root.padding.bottom ) + " )" );
+	
+	var line = createSvgElement( 'line' );
+	setAttribute( line, 'svelte-981876360', '' );
+	setAttribute( line, 'stroke', "#000" );
+	setAttribute( line, 'x2', "100%" );
+	setAttribute( line, 'y1', "0" );
+	setAttribute( line, 'y2', "0" );
+	
+	appendNode( line, g );
+	
+	var text = createSvgElement( 'text' );
+	setAttribute( text, 'svelte-981876360', '' );
+	setAttribute( text, 'fill', "#000" );
+	setAttribute( text, 'x', "0" );
+	setAttribute( text, 'y', "0" );
+	setAttribute( text, 'dy', "-2" );
+	
+	appendNode( text, g );
+	var text1 = createText( tick !== 0 ? tick : '' );
+	appendNode( text1, text );
+
+	return {
+		mount: function ( target, anchor ) {
+			insertNode( g, target, anchor );
+		},
+		
+		update: function ( changed, root, eachBlock_value, tick, tick__index ) {
+			setAttribute( g, 'class', "tick tick-" + ( tick ) );
+			setAttribute( g, 'transform', "translate( 0, " + ( root.yScale(tick) - root.padding.bottom ) + " )" );
+			
+			text1.data = tick !== 0 ? tick : '';
+		},
+		
+		teardown: function ( detach ) {
+			if ( detach ) {
+				detachNode( g );
+			}
+		}
+	};
+}
+
+function Area ( options ) {
+	options = options || {};
+	
+	this._state = Object.assign( template$2.data(), options.data );
+applyComputations$1( this._state, this._state, {}, true );
+
+	this._observers = {
+		pre: Object.create( null ),
+		post: Object.create( null )
+	};
+
+	this._handlers = Object.create( null );
+
+	this._root = options._root;
+	this._yield = options._yield;
+
+	if ( !addedCss$2 ) addCss$2();
+	
+	this._fragment = renderMainFragment$2( this._state, this );
+	if ( options.target ) this._fragment.mount( options.target, null );
+	
+	if ( options._root ) {
+		options._root._renderHooks.push({ fn: template$2.onrender, context: this });
+	} else {
+		template$2.onrender.call( this );
+	}
+}
+
+Area.prototype.get = get;
+Area.prototype.fire = fire;
+Area.prototype.observe = observe;
+Area.prototype.on = on;
+Area.prototype.set = set$2;
+Area.prototype._flush = _flush;
+
+Area.prototype._set = function _set ( newState ) {
+	var oldState = this._state;
+	this._state = Object.assign( {}, oldState, newState );
+	applyComputations$1( this._state, newState, oldState, false );
+	
+	dispatchObservers( this, this._observers.pre, newState, oldState );
+	if ( this._fragment ) this._fragment.update( newState, this._state );
+	dispatchObservers( this, this._observers.post, newState, oldState );
+};
+
+Area.prototype.teardown = function teardown ( detach ) {
+	this.fire( 'teardown' );
+
+	this._fragment.teardown( detach !== false );
+	this._fragment = null;
+
+	this._state = {};
+};
+
+var template = (function () {
+	var template = {
+		data () {
+			return {
+				projects: [],
+				ready: false
+			};
+		},
+		components: {
+			Line,
+			Area
+		},
+		onrender () {
+			console.log('rendered');
+		}
+
+	};
+
+	(function () {
+		  var xhttp = new XMLHttpRequest();
+		  xhttp.onreadystatechange = function() {
+		    if (this.readyState == 4 && this.status == 200) {
+		    	var projects = JSON.parse(this.responseText);
+
+		    	//pass data to Svelte app
+		    	app.set({ projects, ready: true });
+		    }
+		  };
+		  xhttp.open("GET", './data/births_by_race.json', true);
+		  xhttp.send();
+	})();
+
+
+
+	return template;
+}());
+
+let addedCss = false;
+function addCss () {
+	var style = createElement( 'style' );
+	style.textContent = "\n\t.charts  h1[svelte-1768395583], .charts  [svelte-1768395583] h1, .charts[svelte-1768395583]  h1, [svelte-1768395583] .charts  h1, .charts  p[svelte-1768395583], .charts  [svelte-1768395583] p, .charts[svelte-1768395583]  p, [svelte-1768395583] .charts  p {\n\t\tfont-family: Helvetica;\n\t}\n\t.charts  h1[svelte-1768395583], .charts  [svelte-1768395583] h1, .charts[svelte-1768395583]  h1, [svelte-1768395583] .charts  h1 {\n\t\tfont-size: 1.25em;\n\n\t}\t\n\t.charts  p[svelte-1768395583], .charts  [svelte-1768395583] p, .charts[svelte-1768395583]  p, [svelte-1768395583] .charts  p {\n\t\tfont-size: .825em; \n\t\tcolor: #ccc;\n\t}\n\t.charts  svg[svelte-1768395583], .charts  [svelte-1768395583] svg, .charts[svelte-1768395583]  svg, [svelte-1768395583] .charts  svg {\n\t\twidth: 300px;\n\t\theight: 0;\n\t\tpadding-bottom: 55%;\n\t}\n\t.charts  .tick[svelte-1768395583], .charts  [svelte-1768395583] .tick, .charts[svelte-1768395583]  .tick, [svelte-1768395583] .charts  .tick {\n\t\tfont-family: Arial;\n\t\tfont-size: .825em;\n\t}\n\t.charts  .tick  line[svelte-1768395583], .charts  .tick  [svelte-1768395583] line, .charts  .tick[svelte-1768395583]  line, .charts  [svelte-1768395583] .tick  line, .charts[svelte-1768395583]  .tick  line, [svelte-1768395583] .charts  .tick  line {\n\t\tstroke: #e2e2e2;\n\t\tstroke-dasharray: 2;\n\t}\n\t.charts  .tick  text[svelte-1768395583], .charts  .tick  [svelte-1768395583] text, .charts  .tick[svelte-1768395583]  text, .charts  [svelte-1768395583] .tick  text, .charts[svelte-1768395583]  .tick  text, [svelte-1768395583] .charts  .tick  text {\n\t\tfill: #ccc;\n\t\ttext-anchor: start;\n\t}\n\t.charts  .tick.tick-0  line[svelte-1768395583], .charts  .tick.tick-0  [svelte-1768395583] line, .charts  .tick.tick-0[svelte-1768395583]  line, .charts  [svelte-1768395583] .tick.tick-0  line, .charts[svelte-1768395583]  .tick.tick-0  line, [svelte-1768395583] .charts  .tick.tick-0  line {\n\t\tstroke-dasharray: 0;\n\t}\n\t.charts  .x-axis  .tick  text[svelte-1768395583], .charts  .x-axis  .tick  [svelte-1768395583] text, .charts  .x-axis  .tick[svelte-1768395583]  text, .charts  .x-axis  [svelte-1768395583] .tick  text, .charts  .x-axis[svelte-1768395583]  .tick  text, .charts  [svelte-1768395583] .x-axis  .tick  text, .charts[svelte-1768395583]  .x-axis  .tick  text, [svelte-1768395583] .charts  .x-axis  .tick  text {\n\t\ttext-anchor: middle;\n\t}\n";
+	appendNode( style, document.head );
+
+	addedCss = true;
+}
+
+function renderMainFragment ( root, component ) {
+	var div = createElement( 'div' );
+	setAttribute( div, 'svelte-1768395583', '' );
+	div.className = "charts";
+	
+	var line_initialData = {
+		projects: root.projects,
+		ready: root.ready
+	};
+	var line = new template.components.Line({
+		target: div,
+		_root: component._root || component,
+		data: line_initialData
+	});
+	
+	appendNode( createText( "\n\t" ), div );
+	
+	var area_initialData = {
+		projects: root.projects,
+		ready: root.ready
+	};
+	var area = new template.components.Area({
+		target: div,
+		_root: component._root || component,
+		data: area_initialData
+	});
+
+	return {
+		mount: function ( target, anchor ) {
+			insertNode( div, target, anchor );
+		},
+		
+		update: function ( changed, root ) {
+			var line_changes = {};
+			
+			if ( 'projects' in changed ) line_changes.projects = root.projects;
+			if ( 'ready' in changed ) line_changes.ready = root.ready;
+			
+			if ( Object.keys( line_changes ).length ) line.set( line_changes );
+			
+			var area_changes = {};
+			
+			if ( 'projects' in changed ) area_changes.projects = root.projects;
+			if ( 'ready' in changed ) area_changes.ready = root.ready;
+			
+			if ( Object.keys( area_changes ).length ) area.set( area_changes );
+		},
+		
+		teardown: function ( detach ) {
+			line.teardown( false );
+			area.teardown( false );
+			
+			if ( detach ) {
+				detachNode( div );
+			}
+		}
+	};
+}
+
+function App ( options ) {
+	options = options || {};
+	
+	this._state = Object.assign( template.data(), options.data );
+
+	this._observers = {
+		pre: Object.create( null ),
+		post: Object.create( null )
+	};
+
+	this._handlers = Object.create( null );
+
+	this._root = options._root;
+	this._yield = options._yield;
+
 	if ( !addedCss ) addCss();
+	this._renderHooks = [];
 	
 	this._fragment = renderMainFragment( this._state, this );
 	if ( options.target ) this._fragment.mount( options.target, null );
+	
+	this._flush();
 	
 	if ( options._root ) {
 		options._root._renderHooks.push({ fn: template.onrender, context: this });
@@ -2970,17 +3505,18 @@ App.prototype.get = get;
 App.prototype.fire = fire;
 App.prototype.observe = observe;
 App.prototype.on = on;
-App.prototype.set = set;
+App.prototype.set = set$2;
 App.prototype._flush = _flush;
 
 App.prototype._set = function _set ( newState ) {
 	var oldState = this._state;
 	this._state = Object.assign( {}, oldState, newState );
-	applyComputations( this._state, newState, oldState, false );
 	
 	dispatchObservers( this, this._observers.pre, newState, oldState );
 	if ( this._fragment ) this._fragment.update( newState, this._state );
 	dispatchObservers( this, this._observers.post, newState, oldState );
+	
+	this._flush();
 };
 
 App.prototype.teardown = function teardown ( detach ) {
