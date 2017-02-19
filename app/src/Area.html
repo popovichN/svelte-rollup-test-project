@@ -1,7 +1,7 @@
 <h1>Area chart: US birth rate by year</h1>
 <p>Source: <a href='https://www.cdc.gov/nchs/data/nvsr/nvsr66/nvsr66_01.pdf' target='_blank'>CDC</a></p>
 
-<svg>
+<svg ref:svg>
 	<g class='area'>
 	{{#if ready}}
 		<g transform='translate(0,0)'>
@@ -105,7 +105,24 @@
 			}
 		},
 		onrender () {
-			console.log('rendered')
+
+			this.container = this.refs.svg;
+		
+			var self = this;
+
+			window.addEventListener( 'resize', function () {
+				self.resize();
+			});
+
+			this.resize();			
+		},
+		methods: {
+			resize () {
+				this.set({
+					width: this.container.getBoundingClientRect().width,
+					height: this.container.getBoundingClientRect().height
+				});
+			}
 		}
 
 	};
