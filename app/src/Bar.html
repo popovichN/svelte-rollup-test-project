@@ -17,12 +17,12 @@
 				</g>
 				<!-- x axis -->
 				<g class='axis x-axis'>
-					{{#each xTicks as tick}}
-						<g class="tick tick-{{ tick }}" transform="translate( {{ xScale(tick) }}, {{ height }} )">
+					{{#each projects as project, t}}
+						<g class="tick tick-{{ tick }}" transform="translate( {{ (t * barWidth) + padding.left + barWidth/2 }}, {{ height }} )">
 							{{#if width > 380}}
-								<text fill="#000" x="0" y="0" dy="-2">{{ tick }}</text>
+								<text fill="#000" x="0" y="0" dy="-2">{{ project.year }}</text>
 							{{else}}
-								<text fill="#000" x="0" y="0" dy="-2">{{ formatMobile(tick) }}</text>
+								<text fill="#000" x="0" y="0" dy="-2">{{ formatMobile(project.year) }}</text>
 							{{/if}}
 						</g>
 					{{/each}}
@@ -30,8 +30,8 @@
 			</g>
 		</g>
 		<g class='bars'>
-			{{#each projects as project}}
-				<rect x='{{ xScale(project.year) - (barWidth/2) }}' y='{{ yScale(project.birthrate_all) }}' width='{{ barWidth }}' height='{{ height - padding.bottom - yScale(project.birthrate_all) }}'></rect>
+			{{#each projects as project, i}}
+				<rect x='{{ (i * barWidth) + padding.left }}' y='{{ yScale(project.birthrate_all) }}' width='{{ barWidth }}' height='{{ height - padding.bottom - yScale(project.birthrate_all) }}'></rect>
 			{{/each}}
 		</g>
 	{{/if}}
@@ -42,6 +42,8 @@
 
 	.bars rect {
 		fill: #fb0;
+		stroke: white;
+		stroke-width: 2;
 		opacity: 0.5; 
 	}
 </style>
@@ -54,9 +56,9 @@
 			return {
 				padding: {
 					top: 20,
-					right: 50,
+					right: 15,
 					bottom: 20,
-					left: 60
+					left: 25
 				},
 				height: 200,
 				width: 300,
@@ -69,8 +71,11 @@
 			};
 		},
 		computed: {
-			barWidth: function (xScale, projects) {
-				return xScale(projects[0].year) - xScale(projects[1].year) - 2;
+			barWidth: function (xScale, projects, width, padding) {
+				console.log(width, projects.length, padding.left, padding.right)
+				var baseBarWidth = (xScale(projects[1].year) - xScale(projects[0].year));
+				//return (width - padding.left - padding.right)/projects.length
+				return baseBarWidth - (baseBarWidth/projects.length);
 			},
 			yScale: function ( padding, height, yTicks ) {
 				return scaleLinear()

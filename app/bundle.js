@@ -2567,7 +2567,6 @@ var template$1 = (function () {
 						path = 'M' + xScale(year) + ' ' + yScale(datapoint.birthrate_all) + ' ';
 					} else {
 						path += 'L ' + xScale(year) + ' ' + yScale(datapoint.birthrate_all) + ' ';
-
 					}
 				});
 			
@@ -2600,7 +2599,7 @@ var template$1 = (function () {
 let addedCss$1 = false;
 function addCss$1 () {
 	var style = createElement( 'style' );
-	style.textContent = "\n\n\t.path-line[svelte-3722661048], [svelte-3722661048] .path-line {\n\t\tfill: none;\n\t\tstroke: #fb0;\n\t\tstroke-linejoin: round;\n\t\tstroke-linecap: round;\n\t\tstroke-width: 2; \n\t}\n";
+	style.textContent = "\n\n\t.path-line[svelte-3925398482], [svelte-3925398482] .path-line {\n\t\tfill: none;\n\t\tstroke: #fb0;\n\t\tstroke-linejoin: round;\n\t\tstroke-linecap: round;\n\t\tstroke-width: 2; \n\t}\n";
 	appendNode( style, document.head );
 
 	addedCss$1 = true;
@@ -2608,17 +2607,17 @@ function addCss$1 () {
 
 function renderMainFragment$1 ( root, component ) {
 	var h2 = createElement( 'h2' );
-	setAttribute( h2, 'svelte-3722661048', '' );
+	setAttribute( h2, 'svelte-3925398482', '' );
 	
 	appendNode( createText( "Line" ), h2 );
 	var text1 = createText( "\n\n" );
 	
 	var svg = createSvgElement( 'svg' );
-	setAttribute( svg, 'svelte-3722661048', '' );
+	setAttribute( svg, 'svelte-3925398482', '' );
 	component.refs.svg = svg;
 	
 	var g = createSvgElement( 'g' );
-	setAttribute( g, 'svelte-3722661048', '' );
+	setAttribute( g, 'svelte-3925398482', '' );
 	setAttribute( g, 'class', "line" );
 	
 	appendNode( g, svg );
@@ -2669,17 +2668,17 @@ function renderMainFragment$1 ( root, component ) {
 
 function renderIfBlock_0$1 ( root, component ) {
 	var g = createSvgElement( 'g' );
-	setAttribute( g, 'svelte-3722661048', '' );
+	setAttribute( g, 'svelte-3925398482', '' );
 	setAttribute( g, 'transform', "translate(0,0)" );
 	
 	var g1 = createSvgElement( 'g' );
-	setAttribute( g1, 'svelte-3722661048', '' );
+	setAttribute( g1, 'svelte-3925398482', '' );
 	setAttribute( g1, 'class', "axes" );
 	
 	appendNode( g1, g );
 	
 	var g2 = createSvgElement( 'g' );
-	setAttribute( g2, 'svelte-3722661048', '' );
+	setAttribute( g2, 'svelte-3925398482', '' );
 	setAttribute( g2, 'class', "axis y-axis" );
 	setAttribute( g2, 'transform', "translate(0, " + ( root.padding.top ) + " )" );
 	
@@ -2695,7 +2694,7 @@ function renderIfBlock_0$1 ( root, component ) {
 	}
 	
 	var g3 = createSvgElement( 'g' );
-	setAttribute( g3, 'svelte-3722661048', '' );
+	setAttribute( g3, 'svelte-3925398482', '' );
 	setAttribute( g3, 'class', "axis x-axis" );
 	
 	appendNode( g3, g1 );
@@ -2710,7 +2709,7 @@ function renderIfBlock_0$1 ( root, component ) {
 	}
 	
 	var path = createSvgElement( 'path' );
-	setAttribute( path, 'svelte-3722661048', '' );
+	setAttribute( path, 'svelte-3925398482', '' );
 	setAttribute( path, 'class', "path-line" );
 	setAttribute( path, 'd', root.path );
 
@@ -2771,7 +2770,7 @@ function renderIfBlock_0$1 ( root, component ) {
 
 function renderEachBlock1 ( root, eachBlock1_value, tick, tick__index, component ) {
 	var g = createSvgElement( 'g' );
-	setAttribute( g, 'svelte-3722661048', '' );
+	setAttribute( g, 'svelte-3925398482', '' );
 	setAttribute( g, 'class', "tick tick-" + ( tick ) );
 	setAttribute( g, 'transform', "translate( " + ( root.xScale(tick) ) + ", " + ( root.height ) + " )" );
 	
@@ -2820,7 +2819,7 @@ function renderEachBlock1 ( root, eachBlock1_value, tick, tick__index, component
 
 function renderIfBlock1_1 ( root, eachBlock1_value, tick, tick__index, component ) {
 	var text = createSvgElement( 'text' );
-	setAttribute( text, 'svelte-3722661048', '' );
+	setAttribute( text, 'svelte-3925398482', '' );
 	setAttribute( text, 'fill', "#000" );
 	setAttribute( text, 'x', "0" );
 	setAttribute( text, 'y', "0" );
@@ -2848,7 +2847,7 @@ function renderIfBlock1_1 ( root, eachBlock1_value, tick, tick__index, component
 
 function renderIfBlock1_0 ( root, eachBlock1_value, tick, tick__index, component ) {
 	var text = createSvgElement( 'text' );
-	setAttribute( text, 'svelte-3722661048', '' );
+	setAttribute( text, 'svelte-3925398482', '' );
 	setAttribute( text, 'fill', "#000" );
 	setAttribute( text, 'x', "0" );
 	setAttribute( text, 'y', "0" );
@@ -2876,12 +2875,12 @@ function renderIfBlock1_0 ( root, eachBlock1_value, tick, tick__index, component
 
 function renderEachBlock ( root, eachBlock_value, tick, tick__index, component ) {
 	var g = createSvgElement( 'g' );
-	setAttribute( g, 'svelte-3722661048', '' );
+	setAttribute( g, 'svelte-3925398482', '' );
 	setAttribute( g, 'class', "tick tick-" + ( tick ) );
 	setAttribute( g, 'transform', "translate( 0, " + ( root.yScale(tick) - root.padding.bottom ) + " )" );
 	
 	var line = createSvgElement( 'line' );
-	setAttribute( line, 'svelte-3722661048', '' );
+	setAttribute( line, 'svelte-3925398482', '' );
 	setAttribute( line, 'stroke', "#000" );
 	setAttribute( line, 'x2', "100%" );
 	setAttribute( line, 'y1', "0" );
@@ -2890,7 +2889,7 @@ function renderEachBlock ( root, eachBlock_value, tick, tick__index, component )
 	appendNode( line, g );
 	
 	var text = createSvgElement( 'text' );
-	setAttribute( text, 'svelte-3722661048', '' );
+	setAttribute( text, 'svelte-3925398482', '' );
 	setAttribute( text, 'fill', "#000" );
 	setAttribute( text, 'x', "0" );
 	setAttribute( text, 'y', "0" );
@@ -3537,8 +3536,8 @@ function applyComputations$2 ( state, newState, oldState, isInitial ) {
 		state.xScale = newState.xScale = template$3.computed.xScale( state.padding, state.width, state.xTicks );
 	}
 	
-	if ( isInitial || ( 'xScale' in newState && typeof state.xScale === 'object' || state.xScale !== oldState.xScale ) || ( 'projects' in newState && typeof state.projects === 'object' || state.projects !== oldState.projects ) ) {
-		state.barWidth = newState.barWidth = template$3.computed.barWidth( state.xScale, state.projects );
+	if ( isInitial || ( 'xScale' in newState && typeof state.xScale === 'object' || state.xScale !== oldState.xScale ) || ( 'projects' in newState && typeof state.projects === 'object' || state.projects !== oldState.projects ) || ( 'width' in newState && typeof state.width === 'object' || state.width !== oldState.width ) || ( 'padding' in newState && typeof state.padding === 'object' || state.padding !== oldState.padding ) ) {
+		state.barWidth = newState.barWidth = template$3.computed.barWidth( state.xScale, state.projects, state.width, state.padding );
 	}
 	
 	if ( isInitial || ( 'padding' in newState && typeof state.padding === 'object' || state.padding !== oldState.padding ) || ( 'height' in newState && typeof state.height === 'object' || state.height !== oldState.height ) || ( 'yTicks' in newState && typeof state.yTicks === 'object' || state.yTicks !== oldState.yTicks ) ) {
@@ -3552,9 +3551,9 @@ var template$3 = (function () {
 			return {
 				padding: {
 					top: 20,
-					right: 50,
+					right: 15,
 					bottom: 20,
-					left: 60
+					left: 25
 				},
 				height: 200,
 				width: 300,
@@ -3567,8 +3566,11 @@ var template$3 = (function () {
 			};
 		},
 		computed: {
-			barWidth: function (xScale, projects) {
-				return xScale(projects[0].year) - xScale(projects[1].year) - 2;
+			barWidth: function (xScale, projects, width, padding) {
+				console.log(width, projects.length, padding.left, padding.right);
+				var baseBarWidth = (xScale(projects[1].year) - xScale(projects[0].year));
+				//return (width - padding.left - padding.right)/projects.length
+				return baseBarWidth - (baseBarWidth/projects.length);
 			},
 			yScale: function ( padding, height, yTicks ) {
 				return linear()
@@ -3607,7 +3609,7 @@ var template$3 = (function () {
 let addedCss$3 = false;
 function addCss$3 () {
 	var style = createElement( 'style' );
-	style.textContent = "\n\n\t.bars  rect[svelte-1107808868], .bars  [svelte-1107808868] rect, .bars[svelte-1107808868]  rect, [svelte-1107808868] .bars  rect {\n\t\tfill: #fb0;\n\t\topacity: 0.5; \n\t}\n";
+	style.textContent = "\n\n\t.bars  rect[svelte-2982480005], .bars  [svelte-2982480005] rect, .bars[svelte-2982480005]  rect, [svelte-2982480005] .bars  rect {\n\t\tfill: #fb0;\n\t\tstroke: white;\n\t\tstroke-width: 2;\n\t\topacity: 0.5; \n\t}\n";
 	appendNode( style, document.head );
 
 	addedCss$3 = true;
@@ -3615,17 +3617,17 @@ function addCss$3 () {
 
 function renderMainFragment$4 ( root, component ) {
 	var h2 = createElement( 'h2' );
-	setAttribute( h2, 'svelte-1107808868', '' );
+	setAttribute( h2, 'svelte-2982480005', '' );
 	
 	appendNode( createText( "Bar" ), h2 );
 	var text1 = createText( "\n\n" );
 	
 	var svg = createSvgElement( 'svg' );
-	setAttribute( svg, 'svelte-1107808868', '' );
+	setAttribute( svg, 'svelte-2982480005', '' );
 	component.refs.svg = svg;
 	
 	var g = createSvgElement( 'g' );
-	setAttribute( g, 'svelte-1107808868', '' );
+	setAttribute( g, 'svelte-2982480005', '' );
 	setAttribute( g, 'class', "bar" );
 	
 	appendNode( g, svg );
@@ -3676,17 +3678,17 @@ function renderMainFragment$4 ( root, component ) {
 
 function renderIfBlock_0$3 ( root, component ) {
 	var g = createSvgElement( 'g' );
-	setAttribute( g, 'svelte-1107808868', '' );
+	setAttribute( g, 'svelte-2982480005', '' );
 	setAttribute( g, 'transform', "translate(0,0)" );
 	
 	var g1 = createSvgElement( 'g' );
-	setAttribute( g1, 'svelte-1107808868', '' );
+	setAttribute( g1, 'svelte-2982480005', '' );
 	setAttribute( g1, 'class', "axes" );
 	
 	appendNode( g1, g );
 	
 	var g2 = createSvgElement( 'g' );
-	setAttribute( g2, 'svelte-1107808868', '' );
+	setAttribute( g2, 'svelte-2982480005', '' );
 	setAttribute( g2, 'class', "axis y-axis" );
 	setAttribute( g2, 'transform', "translate(0, " + ( root.padding.top ) + " )" );
 	
@@ -3696,28 +3698,28 @@ function renderIfBlock_0$3 ( root, component ) {
 	var eachBlock_value = root.yTicks;
 	var eachBlock_iterations = [];
 	
-	for ( var i = 0; i < eachBlock_value.length; i += 1 ) {
-		eachBlock_iterations[i] = renderEachBlock$2( root, eachBlock_value, eachBlock_value[i], i, component );
-		eachBlock_iterations[i].mount( eachBlock_anchor.parentNode, eachBlock_anchor );
+	for ( var i1 = 0; i1 < eachBlock_value.length; i1 += 1 ) {
+		eachBlock_iterations[i1] = renderEachBlock$2( root, eachBlock_value, eachBlock_value[i1], i1, component );
+		eachBlock_iterations[i1].mount( eachBlock_anchor.parentNode, eachBlock_anchor );
 	}
 	
 	var g3 = createSvgElement( 'g' );
-	setAttribute( g3, 'svelte-1107808868', '' );
+	setAttribute( g3, 'svelte-2982480005', '' );
 	setAttribute( g3, 'class', "axis x-axis" );
 	
 	appendNode( g3, g1 );
 	var eachBlock1_anchor = createComment();
 	appendNode( eachBlock1_anchor, g3 );
-	var eachBlock1_value = root.xTicks;
+	var eachBlock1_value = root.projects;
 	var eachBlock1_iterations = [];
 	
-	for ( var i1 = 0; i1 < eachBlock1_value.length; i1 += 1 ) {
-		eachBlock1_iterations[i1] = renderEachBlock1$2( root, eachBlock1_value, eachBlock1_value[i1], i1, component );
-		eachBlock1_iterations[i1].mount( eachBlock1_anchor.parentNode, eachBlock1_anchor );
+	for ( var i2 = 0; i2 < eachBlock1_value.length; i2 += 1 ) {
+		eachBlock1_iterations[i2] = renderEachBlock1$2( root, eachBlock1_value, eachBlock1_value[i2], i2, component );
+		eachBlock1_iterations[i2].mount( eachBlock1_anchor.parentNode, eachBlock1_anchor );
 	}
 	
 	var g4 = createSvgElement( 'g' );
-	setAttribute( g4, 'svelte-1107808868', '' );
+	setAttribute( g4, 'svelte-2982480005', '' );
 	setAttribute( g4, 'class', "bars" );
 	
 	var eachBlock2_anchor = createComment();
@@ -3725,9 +3727,9 @@ function renderIfBlock_0$3 ( root, component ) {
 	var eachBlock2_value = root.projects;
 	var eachBlock2_iterations = [];
 	
-	for ( var i2 = 0; i2 < eachBlock2_value.length; i2 += 1 ) {
-		eachBlock2_iterations[i2] = renderEachBlock2( root, eachBlock2_value, eachBlock2_value[i2], i2, component );
-		eachBlock2_iterations[i2].mount( eachBlock2_anchor.parentNode, eachBlock2_anchor );
+	for ( var i3 = 0; i3 < eachBlock2_value.length; i3 += 1 ) {
+		eachBlock2_iterations[i3] = renderEachBlock2( root, eachBlock2_value, eachBlock2_value[i3], i3, component );
+		eachBlock2_iterations[i3].mount( eachBlock2_anchor.parentNode, eachBlock2_anchor );
 	}
 
 	return {
@@ -3741,12 +3743,12 @@ function renderIfBlock_0$3 ( root, component ) {
 			
 			var eachBlock_value = root.yTicks;
 			
-			for ( var i = 0; i < eachBlock_value.length; i += 1 ) {
-				if ( !eachBlock_iterations[i] ) {
-					eachBlock_iterations[i] = renderEachBlock$2( root, eachBlock_value, eachBlock_value[i], i, component );
-					eachBlock_iterations[i].mount( eachBlock_anchor.parentNode, eachBlock_anchor );
+			for ( var i1 = 0; i1 < eachBlock_value.length; i1 += 1 ) {
+				if ( !eachBlock_iterations[i1] ) {
+					eachBlock_iterations[i1] = renderEachBlock$2( root, eachBlock_value, eachBlock_value[i1], i1, component );
+					eachBlock_iterations[i1].mount( eachBlock_anchor.parentNode, eachBlock_anchor );
 				} else {
-					eachBlock_iterations[i].update( changed, root, eachBlock_value, eachBlock_value[i], i );
+					eachBlock_iterations[i1].update( changed, root, eachBlock_value, eachBlock_value[i1], i1 );
 				}
 			}
 			
@@ -3754,14 +3756,14 @@ function renderIfBlock_0$3 ( root, component ) {
 			
 			eachBlock_iterations.length = eachBlock_value.length;
 			
-			var eachBlock1_value = root.xTicks;
+			var eachBlock1_value = root.projects;
 			
-			for ( var i1 = 0; i1 < eachBlock1_value.length; i1 += 1 ) {
-				if ( !eachBlock1_iterations[i1] ) {
-					eachBlock1_iterations[i1] = renderEachBlock1$2( root, eachBlock1_value, eachBlock1_value[i1], i1, component );
-					eachBlock1_iterations[i1].mount( eachBlock1_anchor.parentNode, eachBlock1_anchor );
+			for ( var i2 = 0; i2 < eachBlock1_value.length; i2 += 1 ) {
+				if ( !eachBlock1_iterations[i2] ) {
+					eachBlock1_iterations[i2] = renderEachBlock1$2( root, eachBlock1_value, eachBlock1_value[i2], i2, component );
+					eachBlock1_iterations[i2].mount( eachBlock1_anchor.parentNode, eachBlock1_anchor );
 				} else {
-					eachBlock1_iterations[i1].update( changed, root, eachBlock1_value, eachBlock1_value[i1], i1 );
+					eachBlock1_iterations[i2].update( changed, root, eachBlock1_value, eachBlock1_value[i2], i2 );
 				}
 			}
 			
@@ -3771,12 +3773,12 @@ function renderIfBlock_0$3 ( root, component ) {
 			
 			var eachBlock2_value = root.projects;
 			
-			for ( var i2 = 0; i2 < eachBlock2_value.length; i2 += 1 ) {
-				if ( !eachBlock2_iterations[i2] ) {
-					eachBlock2_iterations[i2] = renderEachBlock2( root, eachBlock2_value, eachBlock2_value[i2], i2, component );
-					eachBlock2_iterations[i2].mount( eachBlock2_anchor.parentNode, eachBlock2_anchor );
+			for ( var i3 = 0; i3 < eachBlock2_value.length; i3 += 1 ) {
+				if ( !eachBlock2_iterations[i3] ) {
+					eachBlock2_iterations[i3] = renderEachBlock2( root, eachBlock2_value, eachBlock2_value[i3], i3, component );
+					eachBlock2_iterations[i3].mount( eachBlock2_anchor.parentNode, eachBlock2_anchor );
 				} else {
-					eachBlock2_iterations[i2].update( changed, root, eachBlock2_value, eachBlock2_value[i2], i2 );
+					eachBlock2_iterations[i3].update( changed, root, eachBlock2_value, eachBlock2_value[i3], i3 );
 				}
 			}
 			
@@ -3800,10 +3802,10 @@ function renderIfBlock_0$3 ( root, component ) {
 	};
 }
 
-function renderEachBlock2 ( root, eachBlock2_value, project, project__index, component ) {
+function renderEachBlock2 ( root, eachBlock2_value, project, i, component ) {
 	var rect = createSvgElement( 'rect' );
-	setAttribute( rect, 'svelte-1107808868', '' );
-	setAttribute( rect, 'x', root.xScale(project.year) - (root.barWidth/2) );
+	setAttribute( rect, 'svelte-2982480005', '' );
+	setAttribute( rect, 'x', (i * root.barWidth) + root.padding.left );
 	setAttribute( rect, 'y', root.yScale(project.birthrate_all) );
 	setAttribute( rect, 'width', root.barWidth );
 	setAttribute( rect, 'height', root.height - root.padding.bottom - root.yScale(project.birthrate_all) );
@@ -3813,8 +3815,8 @@ function renderEachBlock2 ( root, eachBlock2_value, project, project__index, com
 			insertNode( rect, target, anchor );
 		},
 		
-		update: function ( changed, root, eachBlock2_value, project, project__index ) {
-			setAttribute( rect, 'x', root.xScale(project.year) - (root.barWidth/2) );
+		update: function ( changed, root, eachBlock2_value, project, i ) {
+			setAttribute( rect, 'x', (i * root.barWidth) + root.padding.left );
 			setAttribute( rect, 'y', root.yScale(project.birthrate_all) );
 			setAttribute( rect, 'width', root.barWidth );
 			setAttribute( rect, 'height', root.height - root.padding.bottom - root.yScale(project.birthrate_all) );
@@ -3828,22 +3830,22 @@ function renderEachBlock2 ( root, eachBlock2_value, project, project__index, com
 	};
 }
 
-function renderEachBlock1$2 ( root, eachBlock1_value, tick, tick__index, component ) {
+function renderEachBlock1$2 ( root, eachBlock1_value, project, t, component ) {
 	var g = createSvgElement( 'g' );
-	setAttribute( g, 'svelte-1107808868', '' );
-	setAttribute( g, 'class', "tick tick-" + ( tick ) );
-	setAttribute( g, 'transform', "translate( " + ( root.xScale(tick) ) + ", " + ( root.height ) + " )" );
+	setAttribute( g, 'svelte-2982480005', '' );
+	setAttribute( g, 'class', "tick tick-" + ( root.tick ) );
+	setAttribute( g, 'transform', "translate( " + ( (t * root.barWidth) + root.padding.left + root.barWidth/2 ) + ", " + ( root.height ) + " )" );
 	
 	var ifBlock1_anchor = createComment();
 	appendNode( ifBlock1_anchor, g );
 	
-	function getBlock1 ( root, eachBlock1_value, tick, tick__index ) {
+	function getBlock1 ( root, eachBlock1_value, project, t ) {
 		if ( root.width > 380 ) return renderIfBlock1_0$2;
 		return renderIfBlock1_1$2;
 	}
 	
-	var currentBlock1 = getBlock1( root, eachBlock1_value, tick, tick__index );
-	var ifBlock1 = currentBlock1 && currentBlock1( root, eachBlock1_value, tick, tick__index, component );
+	var currentBlock1 = getBlock1( root, eachBlock1_value, project, t );
+	var ifBlock1 = currentBlock1 && currentBlock1( root, eachBlock1_value, project, t, component );
 	
 	if ( ifBlock1 ) ifBlock1.mount( ifBlock1_anchor.parentNode, ifBlock1_anchor );
 
@@ -3852,17 +3854,17 @@ function renderEachBlock1$2 ( root, eachBlock1_value, tick, tick__index, compone
 			insertNode( g, target, anchor );
 		},
 		
-		update: function ( changed, root, eachBlock1_value, tick, tick__index ) {
-			setAttribute( g, 'class', "tick tick-" + ( tick ) );
-			setAttribute( g, 'transform', "translate( " + ( root.xScale(tick) ) + ", " + ( root.height ) + " )" );
+		update: function ( changed, root, eachBlock1_value, project, t ) {
+			setAttribute( g, 'class', "tick tick-" + ( root.tick ) );
+			setAttribute( g, 'transform', "translate( " + ( (t * root.barWidth) + root.padding.left + root.barWidth/2 ) + ", " + ( root.height ) + " )" );
 			
 			var _currentBlock1 = currentBlock1;
-			currentBlock1 = getBlock1( root, eachBlock1_value, tick, tick__index );
+			currentBlock1 = getBlock1( root, eachBlock1_value, project, t );
 			if ( _currentBlock1 === currentBlock1 && ifBlock1) {
-				ifBlock1.update( changed, root, eachBlock1_value, tick, tick__index );
+				ifBlock1.update( changed, root, eachBlock1_value, project, t );
 			} else {
 				if ( ifBlock1 ) ifBlock1.teardown( true );
-				ifBlock1 = currentBlock1 && currentBlock1( root, eachBlock1_value, tick, tick__index, component );
+				ifBlock1 = currentBlock1 && currentBlock1( root, eachBlock1_value, project, t, component );
 				if ( ifBlock1 ) ifBlock1.mount( ifBlock1_anchor.parentNode, ifBlock1_anchor );
 			}
 		},
@@ -3877,15 +3879,15 @@ function renderEachBlock1$2 ( root, eachBlock1_value, tick, tick__index, compone
 	};
 }
 
-function renderIfBlock1_1$2 ( root, eachBlock1_value, tick, tick__index, component ) {
+function renderIfBlock1_1$2 ( root, eachBlock1_value, project, t, component ) {
 	var text = createSvgElement( 'text' );
-	setAttribute( text, 'svelte-1107808868', '' );
+	setAttribute( text, 'svelte-2982480005', '' );
 	setAttribute( text, 'fill', "#000" );
 	setAttribute( text, 'x', "0" );
 	setAttribute( text, 'y', "0" );
 	setAttribute( text, 'dy', "-2" );
 	
-	var text1 = createText( root.formatMobile(tick) );
+	var text1 = createText( root.formatMobile(project.year) );
 	appendNode( text1, text );
 
 	return {
@@ -3893,8 +3895,8 @@ function renderIfBlock1_1$2 ( root, eachBlock1_value, tick, tick__index, compone
 			insertNode( text, target, anchor );
 		},
 		
-		update: function ( changed, root, eachBlock1_value, tick, tick__index ) {
-			text1.data = root.formatMobile(tick);
+		update: function ( changed, root, eachBlock1_value, project, t ) {
+			text1.data = root.formatMobile(project.year);
 		},
 		
 		teardown: function ( detach ) {
@@ -3905,15 +3907,15 @@ function renderIfBlock1_1$2 ( root, eachBlock1_value, tick, tick__index, compone
 	};
 }
 
-function renderIfBlock1_0$2 ( root, eachBlock1_value, tick, tick__index, component ) {
+function renderIfBlock1_0$2 ( root, eachBlock1_value, project, t, component ) {
 	var text = createSvgElement( 'text' );
-	setAttribute( text, 'svelte-1107808868', '' );
+	setAttribute( text, 'svelte-2982480005', '' );
 	setAttribute( text, 'fill', "#000" );
 	setAttribute( text, 'x', "0" );
 	setAttribute( text, 'y', "0" );
 	setAttribute( text, 'dy', "-2" );
 	
-	var text1 = createText( tick );
+	var text1 = createText( project.year );
 	appendNode( text1, text );
 
 	return {
@@ -3921,8 +3923,8 @@ function renderIfBlock1_0$2 ( root, eachBlock1_value, tick, tick__index, compone
 			insertNode( text, target, anchor );
 		},
 		
-		update: function ( changed, root, eachBlock1_value, tick, tick__index ) {
-			text1.data = tick;
+		update: function ( changed, root, eachBlock1_value, project, t ) {
+			text1.data = project.year;
 		},
 		
 		teardown: function ( detach ) {
@@ -3935,12 +3937,12 @@ function renderIfBlock1_0$2 ( root, eachBlock1_value, tick, tick__index, compone
 
 function renderEachBlock$2 ( root, eachBlock_value, tick, tick__index, component ) {
 	var g = createSvgElement( 'g' );
-	setAttribute( g, 'svelte-1107808868', '' );
+	setAttribute( g, 'svelte-2982480005', '' );
 	setAttribute( g, 'class', "tick tick-" + ( tick ) );
 	setAttribute( g, 'transform', "translate( 0, " + ( root.yScale(tick) - root.padding.bottom ) + " )" );
 	
 	var line = createSvgElement( 'line' );
-	setAttribute( line, 'svelte-1107808868', '' );
+	setAttribute( line, 'svelte-2982480005', '' );
 	setAttribute( line, 'stroke', "#000" );
 	setAttribute( line, 'x2', "100%" );
 	setAttribute( line, 'y1', "0" );
@@ -3949,7 +3951,7 @@ function renderEachBlock$2 ( root, eachBlock_value, tick, tick__index, component
 	appendNode( line, g );
 	
 	var text = createSvgElement( 'text' );
-	setAttribute( text, 'svelte-1107808868', '' );
+	setAttribute( text, 'svelte-2982480005', '' );
 	setAttribute( text, 'fill', "#000" );
 	setAttribute( text, 'x', "0" );
 	setAttribute( text, 'y', "0" );
@@ -4066,9 +4068,12 @@ var template = (function () {
 		    if (this.readyState == 4 && this.status == 200) {
 		    	console.log(this, 'this');
 		    	var projects = JSON.parse(this.responseText);
+		    	projects.sort(function ( a, b ) {
+		    		return a.year - b.year;
+		    	});
+		    	console.log(projects, 'proj');
 
 		    	//pass data to Svelte app
-		    	console.log(app, 'app');
 		    	app.set({ projects, ready: true });
 		    }
 		  };
@@ -4084,7 +4089,7 @@ var template = (function () {
 let addedCss = false;
 function addCss () {
 	var style = createElement( 'style' );
-	style.textContent = "\n\t.charts[svelte-4220870161], [svelte-4220870161] .charts {\n\t\tmax-width: 480px;\n\t\twidth: 100%;\n\t\tmargin: 0 auto;\n\t}\n\n\t.charts  h1[svelte-4220870161], .charts  [svelte-4220870161] h1, .charts[svelte-4220870161]  h1, [svelte-4220870161] .charts  h1 {\n\t\tfont-family: Georgia, serif;\n\t}\n\t.charts  h2[svelte-4220870161], .charts  [svelte-4220870161] h2, .charts[svelte-4220870161]  h2, [svelte-4220870161] .charts  h2, .charts  p[svelte-4220870161], .charts  [svelte-4220870161] p, .charts[svelte-4220870161]  p, [svelte-4220870161] .charts  p {\n\t\tfont-family: Helvetica, sans-serif;\n\t}\n\t.charts  h1[svelte-4220870161], .charts  [svelte-4220870161] h1, .charts[svelte-4220870161]  h1, [svelte-4220870161] .charts  h1 {\n\t\tfont-size: 1.825em;\n\t}\n\t.charts  h2[svelte-4220870161], .charts  [svelte-4220870161] h2, .charts[svelte-4220870161]  h2, [svelte-4220870161] .charts  h2 {\n\t\tfont-size: 1em;\n\t}\t\n\t.charts  p[svelte-4220870161], .charts  [svelte-4220870161] p, .charts[svelte-4220870161]  p, [svelte-4220870161] .charts  p {\n\t\tfont-size: .825em; \n\t\tcolor: #ccc;\n\t}\n\t.charts  svg[svelte-4220870161], .charts  [svelte-4220870161] svg, .charts[svelte-4220870161]  svg, [svelte-4220870161] .charts  svg {\n\t\tposition: relative;\n\t\twidth: 100%;\n\t\theight: 100%;\n\t}\n\t.charts  .tick[svelte-4220870161], .charts  [svelte-4220870161] .tick, .charts[svelte-4220870161]  .tick, [svelte-4220870161] .charts  .tick, p.source[svelte-4220870161], [svelte-4220870161] p.source {\n\t\tfont-family: Helvetica, Arial;\n\t\tfont-size: .725em;\n\t\tfont-weight: 200;\n\t}\n\t.charts  .tick  line[svelte-4220870161], .charts  .tick  [svelte-4220870161] line, .charts  .tick[svelte-4220870161]  line, .charts  [svelte-4220870161] .tick  line, .charts[svelte-4220870161]  .tick  line, [svelte-4220870161] .charts  .tick  line {\n\t\tstroke: #e2e2e2;\n\t\tstroke-dasharray: 2;\n\t}\n\t.charts  .tick  text[svelte-4220870161], .charts  .tick  [svelte-4220870161] text, .charts  .tick[svelte-4220870161]  text, .charts  [svelte-4220870161] .tick  text, .charts[svelte-4220870161]  .tick  text, [svelte-4220870161] .charts  .tick  text {\n\t\tfill: #ccc;\n\t\ttext-anchor: start;\n\t}\n\t.charts  .tick.tick-0  line[svelte-4220870161], .charts  .tick.tick-0  [svelte-4220870161] line, .charts  .tick.tick-0[svelte-4220870161]  line, .charts  [svelte-4220870161] .tick.tick-0  line, .charts[svelte-4220870161]  .tick.tick-0  line, [svelte-4220870161] .charts  .tick.tick-0  line {\n\t\tstroke-dasharray: 0;\n\t}\n\t.charts  .x-axis  .tick  text[svelte-4220870161], .charts  .x-axis  .tick  [svelte-4220870161] text, .charts  .x-axis  .tick[svelte-4220870161]  text, .charts  .x-axis  [svelte-4220870161] .tick  text, .charts  .x-axis[svelte-4220870161]  .tick  text, .charts  [svelte-4220870161] .x-axis  .tick  text, .charts[svelte-4220870161]  .x-axis  .tick  text, [svelte-4220870161] .charts  .x-axis  .tick  text {\n\t\ttext-anchor: middle;\n\t}\n\t.charts  .bar  .x-axis  .tick  text[svelte-4220870161], .charts  .bar  .x-axis  .tick  [svelte-4220870161] text, .charts  .bar  .x-axis  .tick[svelte-4220870161]  text, .charts  .bar  .x-axis  [svelte-4220870161] .tick  text, .charts  .bar  .x-axis[svelte-4220870161]  .tick  text, .charts  .bar  [svelte-4220870161] .x-axis  .tick  text, .charts  .bar[svelte-4220870161]  .x-axis  .tick  text, .charts  [svelte-4220870161] .bar  .x-axis  .tick  text, .charts[svelte-4220870161]  .bar  .x-axis  .tick  text, [svelte-4220870161] .charts  .bar  .x-axis  .tick  text {\n\t\ttext-anchor: middle;\n\t}\n";
+	style.textContent = "\n\t.charts[svelte-3406972158], [svelte-3406972158] .charts {\n\t\tmax-width: 480px;\n\t\twidth: 100%;\n\t\tmargin: 0 auto;\n\t}\n\n\t.charts  h1[svelte-3406972158], .charts  [svelte-3406972158] h1, .charts[svelte-3406972158]  h1, [svelte-3406972158] .charts  h1 {\n\t\tfont-family: Georgia, serif;\n\t}\n\t.charts  h2[svelte-3406972158], .charts  [svelte-3406972158] h2, .charts[svelte-3406972158]  h2, [svelte-3406972158] .charts  h2, .charts  p[svelte-3406972158], .charts  [svelte-3406972158] p, .charts[svelte-3406972158]  p, [svelte-3406972158] .charts  p {\n\t\tfont-family: Helvetica, sans-serif;\n\t}\n\t.charts  h1[svelte-3406972158], .charts  [svelte-3406972158] h1, .charts[svelte-3406972158]  h1, [svelte-3406972158] .charts  h1 {\n\t\tfont-size: 1.825em;\n\t}\n\t.charts  h2[svelte-3406972158], .charts  [svelte-3406972158] h2, .charts[svelte-3406972158]  h2, [svelte-3406972158] .charts  h2 {\n\t\tfont-size: 1em;\n\t}\t\n\t.charts  p[svelte-3406972158], .charts  [svelte-3406972158] p, .charts[svelte-3406972158]  p, [svelte-3406972158] .charts  p {\n\t\tfont-size: .825em; \n\t\tcolor: #ccc;\n\t}\n\t.charts  svg[svelte-3406972158], .charts  [svelte-3406972158] svg, .charts[svelte-3406972158]  svg, [svelte-3406972158] .charts  svg {\n\t\tposition: relative;\n\t\twidth: 100%;\n\t\theight: 100%;\n\t}\n\t.charts  .tick[svelte-3406972158], .charts  [svelte-3406972158] .tick, .charts[svelte-3406972158]  .tick, [svelte-3406972158] .charts  .tick, p.source[svelte-3406972158], [svelte-3406972158] p.source {\n\t\tfont-family: Helvetica, Arial;\n\t\tfont-size: .725em;\n\t\tfont-weight: 200;\n\t}\n\t.charts  .tick  line[svelte-3406972158], .charts  .tick  [svelte-3406972158] line, .charts  .tick[svelte-3406972158]  line, .charts  [svelte-3406972158] .tick  line, .charts[svelte-3406972158]  .tick  line, [svelte-3406972158] .charts  .tick  line {\n\t\tstroke: #e2e2e2;\n\t\tstroke-dasharray: 2;\n\t}\n\t.charts  .tick  text[svelte-3406972158], .charts  .tick  [svelte-3406972158] text, .charts  .tick[svelte-3406972158]  text, .charts  [svelte-3406972158] .tick  text, .charts[svelte-3406972158]  .tick  text, [svelte-3406972158] .charts  .tick  text {\n\t\tfill: #ccc;\n\t\ttext-anchor: start;\n\t}\n\t.charts  .tick.tick-0  line[svelte-3406972158], .charts  .tick.tick-0  [svelte-3406972158] line, .charts  .tick.tick-0[svelte-3406972158]  line, .charts  [svelte-3406972158] .tick.tick-0  line, .charts[svelte-3406972158]  .tick.tick-0  line, [svelte-3406972158] .charts  .tick.tick-0  line {\n\t\tstroke-dasharray: 0;\n\t}\n\t.charts  .x-axis  .tick  text[svelte-3406972158], .charts  .x-axis  .tick  [svelte-3406972158] text, .charts  .x-axis  .tick[svelte-3406972158]  text, .charts  .x-axis  [svelte-3406972158] .tick  text, .charts  .x-axis[svelte-3406972158]  .tick  text, .charts  [svelte-3406972158] .x-axis  .tick  text, .charts[svelte-3406972158]  .x-axis  .tick  text, [svelte-3406972158] .charts  .x-axis  .tick  text {\n\t\ttext-anchor: middle;\n\t}\n";
 	appendNode( style, document.head );
 
 	addedCss = true;
@@ -4092,11 +4097,11 @@ function addCss () {
 
 function renderMainFragment ( root, component ) {
 	var div = createElement( 'div' );
-	setAttribute( div, 'svelte-4220870161', '' );
+	setAttribute( div, 'svelte-3406972158', '' );
 	div.className = "charts";
 	
 	var h1 = createElement( 'h1' );
-	setAttribute( h1, 'svelte-4220870161', '' );
+	setAttribute( h1, 'svelte-3406972158', '' );
 	
 	appendNode( h1, div );
 	appendNode( createText( "US birthrate by year, 1990-2015" ), h1 );
@@ -4116,14 +4121,14 @@ function renderMainFragment ( root, component ) {
 	appendNode( createText( "\n\n\t" ), div );
 	
 	var p = createElement( 'p' );
-	setAttribute( p, 'svelte-4220870161', '' );
+	setAttribute( p, 'svelte-3406972158', '' );
 	p.className = "source";
 	
 	appendNode( p, div );
 	appendNode( createText( "Source: " ), p );
 	
 	var a = createElement( 'a' );
-	setAttribute( a, 'svelte-4220870161', '' );
+	setAttribute( a, 'svelte-3406972158', '' );
 	a.href = "https://www.cdc.gov/nchs/data/nvsr/nvsr66/nvsr66_01.pdf";
 	a.target = "_blank";
 	

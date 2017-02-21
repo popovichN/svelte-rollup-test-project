@@ -60,9 +60,6 @@
 	.charts .x-axis .tick text {
 		text-anchor: middle;
 	}
-	.charts .bar .x-axis .tick text {
-		text-anchor: middle;
-	}
 </style>
 
 <script>
@@ -94,9 +91,12 @@
 		    if (this.readyState == 4 && this.status == 200) {
 		    	console.log(this, 'this')
 		    	var projects = JSON.parse(this.responseText);
+		    	projects.sort(function ( a, b ) {
+		    		return a.year - b.year;
+		    	});
+		    	console.log(projects, 'proj')
 
 		    	//pass data to Svelte app
-		    	console.log(app, 'app')
 		    	app.set({ projects, ready: true })
 		    }
 		  };
