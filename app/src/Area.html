@@ -1,5 +1,5 @@
 <h1>Area chart: US birth rate by year</h1>
-<p>Source: <a href='https://www.cdc.gov/nchs/data/nvsr/nvsr66/nvsr66_01.pdf' target='_blank'>CDC</a></p>
+<p class='source'>Source: <a href='https://www.cdc.gov/nchs/data/nvsr/nvsr66/nvsr66_01.pdf' target='_blank'>CDC</a></p>
 
 <svg ref:svg>
 	<g class='area'>
@@ -12,7 +12,7 @@
 					{{#each yTicks as tick}}
 						<g class="tick tick-{{ tick }}" transform="translate( 0, {{ yScale(tick) - padding.bottom }} )">
 							<line stroke="#000" x2="100%" y1="0" y2="0"></line>
-							<text fill="#000" x="0" y="0" dy="-2">{{ tick !== 0 ? tick : ''}}</text>
+							<text fill="#000" x="0" y="0" dy="-2">{{ tick !== 0 ? tick : ''}} {{tick === 20 ? ' per 1,000 population' : ''}}</text>
 						</g>
 					{{/each}}
 				</g>
@@ -21,7 +21,11 @@
 					{{#each xTicks as tick}}
 						<g class="tick tick-{{ tick }}" transform="translate( {{ xScale(tick) }}, {{ height }} )">
 							<!-- <line stroke="#000" x2="100%" y1="0" y2="0"></line> -->
-							<text fill="#000" x="0" y="0" dy="-2">{{ tick !== 0 ? tick : ''}}</text>
+							{{#if width > 380}}
+								<text fill="#000" x="0" y="0" dy="-2">{{ tick }}</text>
+							{{else}}
+								<text fill="#000" x="0" y="0" dy="-2">{{ formatMobile(tick) }}</text>
+							{{/if}}
 						</g>
 					{{/each}}
 				</g>
@@ -63,7 +67,10 @@
 				width: 300,
 				foo: 'bar',
 				yTicks:  [0, 5, 10, 15, 20 ],
-				xTicks: [1990, 1995, 2000, 2005, 2010, 2015]
+				xTicks: [1990, 1995, 2000, 2005, 2010, 2015],
+				formatMobile ( tick ) {
+					return '\'' + tick.toString().slice(-2);
+				}
 			};
 		},
 		components: {
