@@ -1,7 +1,7 @@
-<h2>Area</h2>
+<h2>Bar</h2>
 
 <svg ref:svg>
-	<g class='area'>
+	<g class='bar'>
 	{{#if ready}}
 		<g transform='translate(0,0)'>
 			<g class='axes'>
@@ -19,7 +19,6 @@
 				<g class='axis x-axis'>
 					{{#each xTicks as tick}}
 						<g class="tick tick-{{ tick }}" transform="translate( {{ xScale(tick) }}, {{ height }} )">
-							<!-- <line stroke="#000" x2="100%" y1="0" y2="0"></line> -->
 							{{#if width > 380}}
 								<text fill="#000" x="0" y="0" dy="-2">{{ tick }}</text>
 							{{else}}
@@ -30,27 +29,24 @@
 				</g>
 			</g>
 		</g>
-
-		<path class='path-area' d="{{ areaPath }}"></path>
+		<g class='bars'>
+			{{#each projects as project}}
+				<rect x='{{ xScale(project.year) - (barWidth/2) }}' y='{{ yScale(project.birthrate_all) }}' width='{{ barWidth }}' height='{{ height - padding.bottom - yScale(project.birthrate_all) }}'></rect>
+			{{/each}}
+		</g>
 	{{/if}}
 	</g>
 </svg>
 
-<!-- <Nested foo='{{foo}}'/>
- -->
 <style>
-	.path-area {
+
+	.bars rect {
 		fill: #fb0;
-		stroke: transparent;
-		stroke-linejoin: round;
-		stroke-linecap: round;
-		stroke-width: 2; 
-		opacity: 0.5;
+		opacity: 0.5; 
 	}
 </style>
 
 <script>
-	import Nested from './Nested.html';
 	import { scaleLinear } from "d3-scale";
 
 	export default {
@@ -58,9 +54,9 @@
 			return {
 				padding: {
 					top: 20,
-					right: 15,
+					right: 50,
 					bottom: 20,
-					left: 25
+					left: 60
 				},
 				height: 200,
 				width: 300,
@@ -72,10 +68,10 @@
 				}
 			};
 		},
-		components: {
-			Nested
-		},
 		computed: {
+			barWidth: function (xScale, projects) {
+				return xScale(projects[0].year) - xScale(projects[1].year) - 2;
+			},
 			yScale: function ( padding, height, yTicks ) {
 				return scaleLinear()
 					.domain([Math.min.apply(null, yTicks), Math.max.apply(null, yTicks)])
@@ -85,29 +81,6 @@
 				return scaleLinear()
 					.domain([Math.min.apply(null, xTicks), Math.max.apply(null, xTicks)])
    					.range([padding.left, width - padding.right]);
-			},
-			areaPath ( projects, xScale, yScale ) {
-				
-				var path = '';
-				var years = [];
-				var initialpoint;
-
-				// make path
-				projects.forEach(function (datapoint, i) {
-					var year = datapoint.year;
-					years.push(year)
-
-					if (i === 0) {
-						path = 'M' + xScale(year) + ' ' + yScale(datapoint.birthrate_all) + ' ';
-						initialpoint = 'L ' + xScale(year) + ' ' + yScale(datapoint.birthrate_all) + ' ';
-					} else {
-						path += 'L ' + xScale(year) + ' ' + yScale(datapoint.birthrate_all) + ' ';
-					}
-				})
-
-				path += 'L ' + xScale(years[years.length-1]) + ' ' + yScale(0) + ' ' + 'L ' + xScale(years[0]) + ' ' + yScale(0) + ' ';
-			
-				return path;
 			}
 		},
 		onrender () {
@@ -130,6 +103,5 @@
 				});
 			}
 		}
-
 	};
 </script>

@@ -1,8 +1,14 @@
 <div class='charts'>
+	<h1>US birthrate by year, 1990-2015 </h1>
+	
 	{{#if ready}}
 		<Line projects='{{projects}}' ready='{{ready}}' />
 		<Area projects='{{projects}}' ready='{{ready}}' />
+		<Bar projects='{{projects}}' ready='{{ready}}' />
 	{{/if}}
+
+	<p class='source'>Source: <a href='https://www.cdc.gov/nchs/data/nvsr/nvsr66/nvsr66_01.pdf' target='_blank'>CDC</a></p>
+
 </div>
 
 <style>
@@ -12,13 +18,18 @@
 		margin: 0 auto;
 	}
 
-	.charts h1,
-	.charts p {
+	.charts h1 {
 		font-family: Georgia, serif;
 	}
+	.charts h2,
+	.charts p {
+		font-family: Helvetica, sans-serif;
+	}
 	.charts h1 {
+		font-size: 1.825em;
+	}
+	.charts h2 {
 		font-size: 1em;
-
 	}	
 	.charts p {
 		font-size: .825em; 
@@ -49,12 +60,16 @@
 	.charts .x-axis .tick text {
 		text-anchor: middle;
 	}
+	.charts .bar .x-axis .tick text {
+		text-anchor: middle;
+	}
 </style>
 
 <script>
 	import Line from './Line.html';
 	import Area from './Area.html';
-
+	import Bar from './Bar.html';
+	
 	export default {
 		data () {
 			return {
@@ -64,7 +79,8 @@
 		},
 		components: {
 			Line,
-			Area
+			Area,
+			Bar
 		},
 		onrender () {
 			console.log('rendered')
